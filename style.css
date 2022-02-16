@@ -81,7 +81,7 @@ li, a, button, h1, h3, p {
     .nav-bar {
         display: flex;
         flex-direction: column-reverse;
-        height: 20vh;
+        height: 40vh;
     }
 
     .nav-bar-list {
@@ -90,6 +90,11 @@ li, a, button, h1, h3, p {
 
     .social-list {
         display: none;
+    }
+    
+    .header-logo {
+        background-position: 50% 50%;
+        height: 75px;
     }
 }
 
