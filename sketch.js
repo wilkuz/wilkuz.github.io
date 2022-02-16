@@ -4,9 +4,11 @@ const num = 1000;
 function setup() {
   var cnv = createCanvas(windowWidth-20, windowHeight/2);
   cnv.style('display', 'block');
-  cnv.style('position', 'absolute');
   cnv.style('top', "125vh");
   cnv.parent("#sketch-holder");
+  if (windowWidth < 380) {
+    cnv.style('display', 'none');
+  }
   for(let i=0; i < num; i ++) {
     particles.push(createVector(random(width),
     random(height)));
