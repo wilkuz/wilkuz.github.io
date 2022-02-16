@@ -12,7 +12,7 @@ random(height)));
 
 function draw() {
   let noiseScale = 0.01;
-  	background("rgba(249,248,246,0.3)");
+  	background("rgba(255,248,232,0.3)");
   for(let i=0; i < num; i++){
     let p = particles[i];
     let c = color(0,0,0);
