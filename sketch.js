@@ -2,7 +2,7 @@ let particles = [];
 const num = 1000;
 
 function setup() {
-  var cnv = createCanvas(windowWidth-20, windowHeight/2);
+  var cnv = createCanvas(windowWidth, windowHeight/5);
   cnv.style('display', 'block');
   cnv.style('top', "125vh");
   cnv.parent("#sketch-holder");

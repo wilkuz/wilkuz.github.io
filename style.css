@@ -4,7 +4,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 html, body {
@@ -90,7 +89,6 @@ li, a, button, h1, h3, p {
     /* centers the div */
     margin-right: auto;
     margin-left: auto;
-    height: 95vh;
 }
 
 @media only screen and (max-width:900px) {
@@ -175,6 +173,8 @@ li, a, button, h1, h3, p {
     height: 50vh;
     display: flex;
     overflow: hidden;
+    position: relative;
+    top: 150px;
 }
 
 .p5js-embed-box {
