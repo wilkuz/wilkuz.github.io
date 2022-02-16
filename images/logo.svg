@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <style bx:fonts="Advent Pro">@import url(https://fonts.googleapis.com/css2?family=Advent+Pro%3Aital%2Cwght%400%2C100%3B0%2C200%3B0%2C300%3B0%2C400%3B0%2C500%3B0%2C600%3B0%2C700&amp;display=swap);</style>
+  </defs>
+  <text style="font-family: &quot;Advent Pro&quot;; font-size: 16.2px; text-transform: capitalize; white-space: pre;" transform="matrix(15.592592, 0, 0, 16.67742, -1750.089722, -1144.477417)" x="119.93" y="87.486" dx="0.817" dy="0.382">W</text>
+  <path style="fill: none; stroke: rgb(0, 0, 0); stroke-width: 6px;" d="M 240.678 90.383 C 342.722 90.383 406.5 197.272 355.478 282.785 C 304.456 368.296 176.9 368.296 125.878 282.785 C 107.721 252.357 103.26 216.053 113.535 182.353 C 130.648 128.142 182.103 90.923 240.678 90.383 Z"/>
+</svg>

@@ -1,0 +1,43 @@
+let particles = [];
+const num = 1000;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight/4);
+  for(let i=0; i < num; i ++) {
+    particles.push(createVector(random(width),
+random(height)));
+  }
+  stroke(255);
+}
+
+function draw() {
+  let noiseScale = 0.01;
+  	background("rgba(249,248,246,0.3)");
+  for(let i=0; i < num; i++){
+    let p = particles[i];
+    let c = color(0,0,0);
+    fill(c);
+    stroke(c);
+    ellipse(p.x, p.y, 1, 1);
+    let n = noise(p.x * noiseScale, p.y * noiseScale);
+    let a = TAU * n;
+    p.x += cos(a)*2;
+    p.y += sin(a)*3;
+    if(!onScreen(p)) {
+      p.x = random(width);
+      p.y = random(height);
+    }
+  }
+}
+
+function mouseReleased(scale) {
+  noiseSeed(millis());
+}
+
+function onScreen(v) {
+  return v.x >= 0 && v.x <= width && v.y >= 0 && v.y <= height;
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeigth/2);
+}

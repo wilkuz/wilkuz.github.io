@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background-color: rgb(255, 248, 232);
+    scroll-behavior: smooth;
+}
+
+li, a, button, h1, h3, p {
+    font-family: "Montserrat", sans-serif;
+    color: black;
+    text-decoration: none;
+}
+
+/* --- NAVBAR AND HEADER --- */
+
+.nav-bar {
+    background-color: rgb(255, 248, 232);
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    height: 50px;
+    max-height: 10vh;
+    width: 100%;
+}
+
+.nav-bar-list {
+    display: flex;
+    list-style: none;
+    align-self: center;
+    justify-content: space-evenly;
+}
+
+.nav-bar-list-item {
+    font-size: 0.9em;
+    font-weight: 400;
+    padding: 5px 10px 5px 10px;
+    transition: opacity 0.15s ease-in;
+    justify-content: space-evenly;
+    border-radius: 25px;
+    border: 1px dashed black;
+}
+
+.nav-bar-list-item:hover {
+    opacity: 0.7;
+}
+
+.social-list {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 50px;
+    gap: 25px;   
+}
+
+.social-list li a:hover {
+    opacity: 0.8;
+}
+
+.header-logo {
+    background-image: url(images/w-logo.jpg);
+    background-size: 130%;
+    background-repeat: no-repeat;
+    bottom: 90vh;
+    width: 100px;
+    height: 73px;
+    background-position: 50% 58%;
+    cursor: pointer;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* --- WELCOME PAGE --- */
+
+.welcome-section {
+    min-height: 90vh;
+}
+
+.welcome-container {
+    padding-top: 15vh;
+    text-align: center;
+    /* makes div responsive */
+    max-width: 60%;
+    /* centers the div */
+    margin-right: auto;
+    margin-left: auto;
+    height: 95vh;
+}
+
+@media only screen and (max-width:900px) {
+    .welcome-container {
+        max-width: 90%;
+    }
+}
+
+.welcome-heading {
+    font-size: 6em;
+    font-weight: 700;
+    letter-spacing: 0px;
+    padding-bottom: 2.5vh;
+}
+
+.hello-heading {
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.personal-description {
+    width: 65%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 3vh;
+    padding-bottom: 7vh;
+    font-size: 1.2em;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    line-height: 30px;    
+}
+
+.email-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.email-btn-container div {
+    padding: 12px 30px;
+    border: 2px dashed black;
+    border-radius: 100px;
+    background-color: rgba(255, 253, 161, 1);
+    box-shadow: 5px 5px 10px black;
+    transition: background-color 0.2s ease;
+}
+
+.email-btn-container div:hover {
+    padding: 11px 29px 12px 29px;
+    background-color: rgba(255, 253, 161, 0.8);
+    color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    box-shadow: 5px 5px 3px black;
+}
+
+.email-btn-container div a {
+    font-size: 1em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: inherit;
+}
+
+.art-arrow-container {
+    padding-top: 150px;
+    letter-spacing: 5px;
+}
+
+.art-arrow {
+    width: 85px;
+    transition: width 0.5s;
+}
+
+.art-arrow:hover {
+    cursor: pointer;
+}
+
+.art-arrow-text:hover {
+    cursor: pointer;
+}
+
+.p5js-embed-box {
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    padding-top: 150px;
+    border: none;
+    overflow: hidden;
+}
+
+.p5js-embed {
+    width: 100vw;
+    height: 10vh;
+    border: none;
+    overflow: hidden;
+}
+
+.p5Canvas {
+    overflow: hidden;
+}
