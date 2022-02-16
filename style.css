@@ -170,6 +170,12 @@ li, a, button, h1, h3, p {
     cursor: pointer;
 }
 
+#sketch-holder {
+    height: 50vh;
+    display: flex;
+    overflow: hidden;
+}
+
 .p5js-embed-box {
     padding: 0px;
     margin: 0px;

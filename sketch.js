@@ -2,10 +2,14 @@ let particles = [];
 const num = 1000;
 
 function setup() {
-  createCanvas(windowWidth-20, windowHeight);
+  var cnv = createCanvas(windowWidth-20, windowHeight/2);
+  cnv.style('display', 'block');
+  cnv.style('position', 'absolute');
+  cnv.style('top', "125vh");
+  cnv.parent("#sketch-holder");
   for(let i=0; i < num; i ++) {
     particles.push(createVector(random(width),
-random(height)));
+    random(height)));
   }
   stroke(255);
 }
