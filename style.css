@@ -63,7 +63,7 @@ li, a, button, h1, h3, p {
 }
 
 .header-logo {
-    background-image: url(images/logo-header-bg.png);
+    background-image: url(images/logo-header-bg-lightmode.png);
     background-size: 130%;
     background-repeat: no-repeat;
     bottom: 90vh;
