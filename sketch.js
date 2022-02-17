@@ -1,4 +1,4 @@
-let particles = [];
+let sketchParticles = [];
 const num = 1000;
 
 function setup() {
@@ -10,7 +10,7 @@ function setup() {
     cnv.style('display', 'none');
   }
   for(let i=0; i < num; i ++) {
-    particles.push(createVector(random(width),
+    sketchParticles.push(createVector(random(width),
     random(height)));
   }
   stroke(255);
@@ -20,7 +20,7 @@ function draw() {
   let noiseScale = 0.01;
   	background("rgba(255,248,232,0.3)");
   for(let i=0; i < num; i++){
-    let p = particles[i];
+    let p = sketchParticles[i];
     let c = color(0,0,0);
     fill(c);
     stroke(c);
