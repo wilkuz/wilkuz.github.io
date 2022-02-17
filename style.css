@@ -100,6 +100,10 @@ li, a, button, h1, h3, p {
     background-repeat: no-repeat;
 }
 
+.toggle-dark-mode-box:hover {
+    cursor: pointer;
+}
+
 .toggle-dark-mode-icon-container {
     width: 1.45rem;
     min-height: 1.45rem;
@@ -111,10 +115,6 @@ li, a, button, h1, h3, p {
                 inset 0 4px 4px rgba(255, 255, 255, 0.2),
                 inset 0 4px 4px rgba(240, 240, 240, 0.2);
     transition: 0.5s;
-}
-
-.toggle-dark-mode-icon-container:hover {
-    cursor: pointer;
 }
 
 .dark-mode-active * {

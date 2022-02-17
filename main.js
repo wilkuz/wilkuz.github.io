@@ -21,12 +21,12 @@ artArrow.addEventListener('mouseout', () => {
 /* adding toggle event for dark mode */
 
 const body = document.querySelector('body');
-const toggleBtn = document.getElementById('toggle-dark-mode');
+// const toggleBtn = document.getElementById('toggle-dark-mode');
 const toggleContainer = document.getElementById('toggle-dark-mode-box');
 const headerLogo = document.getElementsByClassName('header-logo');
 const navListItems = document.getElementsByClassName('nav-bar-list-item');
 
-toggleBtn.addEventListener('click', (e) => {
+toggleContainer.addEventListener('click', (e) => {
     // shift button position and switch to light mode
     if (toggleContainer.style.justifyContent === "flex-end") {
         toggleContainer.style.justifyContent = "flex-start";
