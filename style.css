@@ -378,6 +378,7 @@ li, a, button, h1, h3, p {
 
 #sketch-holder {
     position: relative;
+    overflow: hidden;
 }
 
 .sketch-overlay {
