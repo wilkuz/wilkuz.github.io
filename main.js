@@ -120,10 +120,21 @@ toggleContainer.addEventListener('click', (e) => {
         for (let arrow of arrows) {
             arrow.src = "images/Arrow-down-darkmode.png";
         }
+
+        sketchOverlay.style.display = "none";
         // // switch face to white
         // let face = document.querySelector(".contact-image");
         // face.src = "images/face-darkmode.png"
     }    
 });
 
-/* making form submittable and sending email */
+/* Removing overlay from sketch */
+
+const sketchBtn = document.getElementById('sketch-btn');
+const sketchOverlay = document.getElementsByClassName('sketch-overlay')[0];
+const sketch = document.getElementById('#sketch-holder');
+
+sketchBtn.addEventListener('click', () => {
+    sketchOverlay.style.backgroundColor = "transparent";
+    sketchBtn.style.display = "none";
+})
