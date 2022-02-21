@@ -6,9 +6,25 @@
     padding: 0;
 }
 
+:root {
+    --main-bg-color: rgb(255, 248, 232);
+    --off-black: rgb(35, 35, 35);
+    --lavender: rgb(171, 135, 255);
+    --orange: rgb(255, 178, 107);
+}
+
 html, body {
     background-color: rgb(255, 248, 232);
     scroll-behavior: smooth;
+    font-family: "Montserrat", sans-serif;
+}
+
+hr {
+    max-width: 50%;
+    margin-right: auto;
+    margin-left: auto;
+    border: none;
+    border-top: 1px dashed var(--off-black)
 }
 
 li, a, button, h1, h3, p {
@@ -120,6 +136,7 @@ li, a, button, h1, h3, p {
 .dark-mode-active * {
     color: rgb(223, 223, 223) !important;
     background-color: rgb(35, 35, 35) !important;
+    border-color: rgb(223, 223, 223) !important;
 }
 
 /* --- MAKING HEADER RESPONSIVE  --- */
@@ -150,10 +167,11 @@ li, a, button, h1, h3, p {
     }
 }
 
-/* --- WELCOME PAGE --- */
+/* --- WELCOME SECTION --- */
 
 .welcome-section {
-    min-height: 90vh;
+    padding-bottom: 5rem;
+    min-height: 100vh;
 }
 
 .welcome-container {
@@ -233,13 +251,114 @@ li, a, button, h1, h3, p {
     background-color: rgb(255, 178, 107) !important;
 }
 
+.about-me-arrow-container {
+    padding-top: 150px;
+    letter-spacing: 5px;
+}
+
+.about-me-arrow {
+    width: 3.5rem;
+    transition: width 0.5s;
+}
+
+.about-me-arrow:hover {
+    cursor: pointer;
+}
+
+.about-me-arrow-text:hover {
+    cursor: pointer;
+}
+
+/* --- ABOUT ME SECTION ---*/
+
+.about-me-section {
+    padding-top: 5rem;
+    min-height: 50vh;
+}
+
+.about-me-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    max-width: 60%;
+    text-align: center;
+    margin: 0 auto;
+    align-items: center;
+}
+
+#about-me-image {
+    max-width: 90%;
+    border-radius: 50%;
+}
+
+.about-me-text-container {
+    padding: 2rem;
+    line-height: 1.2rem;
+}
+
+.about-me-text-container * span {
+    color: var(--lavender)
+}
+
+.about-me-header {
+    padding-bottom: 3rem;
+    font-size: 3rem;
+    text-decoration: underline;
+}
+
+.portfolio-arrow-container {
+    text-align: center;
+    padding-top: 5rem;
+}
+
+.portfolio-arrow {
+    width: 3.5rem;
+    transition: width 0.5s;
+}
+
+.portfolio-arrow-text {
+    letter-spacing: 5px;
+}
+
+/* Making about section responsive */
+
+@media screen and (max-width:1400px) {
+    .about-me-container {
+        display: block;
+        max-width: 95%;
+    }
+
+    #about-me-image {
+        max-width: 50%;
+    }
+
+    .about-me-text-container {
+        padding: 2rem 1em 0 1em;
+    }
+
+    .portfolio-arrow-container {
+        padding-top: 1rem;
+    }
+}
+
+/* --- PORTFOLIO SECTION --- */
+
+.portfolio-section {
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.art-arrow-container {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .art-arrow-container {
     padding-top: 150px;
     letter-spacing: 5px;
 }
 
 .art-arrow {
-    width: 85px;
+    width: 3.5rem;
     transition: width 0.5s;
 }
 
@@ -251,12 +370,10 @@ li, a, button, h1, h3, p {
     cursor: pointer;
 }
 
-#sketch-holder {
-    height: 50vh;
-    display: flex;
-    overflow: hidden;
-    position: relative;
-    top: 150px;
+/* --- ART SECTION --- */
+
+.art-section {
+    padding-top: 2rem;
 }
 
 .p5js-embed-box {
@@ -278,4 +395,122 @@ li, a, button, h1, h3, p {
 
 .p5Canvas {
     overflow: hidden;
+}
+
+.dice-image {
+    max-width: 100%;
+}
+
+.contact-arrow-container {
+    padding-top: 150px;
+    letter-spacing: 5px;
+    margin:0 auto;
+    text-align: center;
+    padding-bottom: 4rem;
+}
+
+.contact-arrow {
+    width: 3.5rem;
+    transition: width 0.5s;
+}
+
+.contact-arrow:hover {
+    cursor: pointer;
+}
+
+.contact-arrow-text:hover {
+    cursor: pointer;
+}
+
+/* --- CONTACT FORM --- */
+
+.contact-form-section {
+    padding-top: 5rem;
+}
+
+@media only screen and (max-width: 1000px) {
+    .contact-image {
+        display: none;
+    }
+}
+
+.contact-form-container {
+    padding: 2rem 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contact-form-section * h2 {
+    text-align: center;
+}
+
+.contact-form-input {
+    font-family: "Montserrat";
+    width: 80%;
+    border: none;
+    background: transparent;
+    border-bottom: 0.5px solid var(--off-black);
+    font-size: 1em;
+    max-width: 50rem;
+    outline: none;
+    height: 2em;
+}
+
+.contact-form-message {
+    font-family: "Montserrat";
+    border: none;
+    border-bottom: 0.5px solid var(--off-black);
+    background: transparent;
+    width: 80%;
+    max-width: 50rem;
+    font-size: 1em;
+    outline: none;
+    resize: none;
+    overflow: auto;
+}
+
+.contact-form-submit {
+    font-family: "Montserrat";
+    padding: 0 1.25rem;
+    border: none;
+    background: transparent;
+    border: 2.5px solid var(--lavender);
+    font-size: 1em;
+    max-width: 50rem;
+    outline: none;
+    height: 2em;
+}
+
+.contact-form-submit:hover {
+    cursor: pointer;
+}
+
+/* --- FOR DESKTOP AND TABLETS ---*/
+
+@media only screen and (min-width:800px) {
+    .contact-form-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: 0 20rem;
+    }
+
+    .contact-form {
+        flex-basis: 50vw;
+        flex-shrink: 0;
+        flex-grow: 1;
+    }
+
+    .contact-image {
+        max-width: 250px;
+    }
+}
+
+.about-me-arrow-container, .portfolio-arrow-container, .art-arrow-container {
+    min-height: 250px;
+}
+
+.contact-arrow-container {
+    min-height: 300px;
 }

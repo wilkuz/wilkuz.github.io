@@ -1,22 +1,85 @@
+/* animating the about-me-arrow down */
+const aboutmeArrow = document.querySelector(".about-me-arrow");
+const aboutmeText = document.querySelector(".about-me-arrow-text");
+
+aboutmeText.addEventListener('mouseenter', () => {
+    aboutmeArrow.style.width = "3rem";
+});
+
+aboutmeText.addEventListener('mouseout', () => {
+    aboutmeArrow.style.width = "3.5rem";
+});
+
+aboutmeArrow.addEventListener('mouseenter', () => {
+    aboutmeArrow.style.width = "3rem";
+});
+
+aboutmeArrow.addEventListener('mouseout', () => {
+    aboutmeArrow.style.width = "3.5rem";
+});
+
+/* animating portfolio arrow */
+
+/* animating the portfolio-arrow down */
+const portfolioArrow = document.querySelector(".portfolio-arrow");
+const portfolioText = document.querySelector(".portfolio-arrow-text");
+
+portfolioText.addEventListener('mouseenter', () => {
+    portfolioArrow.style.width = "3rem";
+});
+
+portfolioText.addEventListener('mouseout', () => {
+    portfolioArrow.style.width = "3.5rem";
+});
+
+portfolioArrow.addEventListener('mouseenter', () => {
+    portfolioArrow.style.width = "3rem";
+});
+
+portfolioArrow.addEventListener('mouseout', () => {
+    portfolioArrow.style.width = "3.5rem";
+});
+
 /* animating the art-arrow down */
 const artArrow = document.querySelector(".art-arrow");
-const artText = document.querySelector(".art-arrow-text");
+const artText = document.querySelector(".portfolio-arrow-text");
 
 artText.addEventListener('mouseenter', () => {
-    artArrow.style.width = "80px";
+    artArrow.style.width = "3rem";
 });
 
 artText.addEventListener('mouseout', () => {
-    artArrow.style.width = "85px";
+    artArrow.style.width = "3.5rem";
 });
 
 artArrow.addEventListener('mouseenter', () => {
-    artArrow.style.width = "80px";
+    artArrow.style.width = "3rem";
 });
 
 artArrow.addEventListener('mouseout', () => {
-    artArrow.style.width = "85px";
+    artArrow.style.width = "3.5rem";
 });
+
+/* animating the contact-arrow down */
+const contactArrow = document.querySelector(".contact-arrow");
+const contactText = document.querySelector(".contact-arrow-text");
+
+contactText.addEventListener('mouseenter', () => {
+    contactArrow.style.width = "3rem";
+});
+
+contactText.addEventListener('mouseout', () => {
+    contactArrow.style.width = "3.5rem";
+});
+
+contactArrow.addEventListener('mouseenter', () => {
+    contactArrow.style.width = "3rem";
+});
+
+contactArrow.addEventListener('mouseout', () => {
+    contactArrow.style.width = "3.5rem";
+});
+
 
 /* adding toggle event for dark mode */
 
@@ -35,6 +98,14 @@ toggleContainer.addEventListener('click', (e) => {
         for (let item of navListItems) {
             item.style.border = "1px dashed black";
         }
+        // switch arrows to black
+        let arrows = document.querySelectorAll('img[src="images/Arrow-down.svg"]');
+        for (let arrow of arrows) {
+            arrow.src = "images/Arrow-down.svg";
+        }
+        // // switch face to black
+        // let face = document.querySelector(".contact-image");
+        // face.src = "images/face.png"
     }
     //shift button position and switch to dark mode
     else {
@@ -44,5 +115,15 @@ toggleContainer.addEventListener('click', (e) => {
         for (let item of navListItems) {
             item.style.border = "1px dashed white";
         }
+        // switch arrows to white
+        let arrows = document.querySelectorAll('img[src="images/Arrow-down.svg"]');
+        for (let arrow of arrows) {
+            arrow.src = "images/Arrow-down-darkmode.png";
+        }
+        // // switch face to white
+        // let face = document.querySelector(".contact-image");
+        // face.src = "images/face-darkmode.png"
     }    
 });
+
+/* making form submittable and sending email */

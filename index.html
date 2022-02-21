@@ -10,16 +10,15 @@
         <link rel="stylesheet" href="style.css">
         <script src="https://kit.fontawesome.com/1c8a830042.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
-        <script src="sketch.js"></script>
     </head>
     <body>
         <header>
             <nav class="nav-bar">
                 <ul class="nav-bar-list">
+                    <li class="nav-bar-list-item"><a href="#about-me-section">about me</a></li>
+                    <li class="nav-bar-list-item"><a href="#portfolio-section">portfolio</a></li>
                     <li class="nav-bar-list-item"><a href="#art-section">art</a></li>
-                    <li class="nav-bar-list-item"><a href="">projects</a></li>
-                    <li class="nav-bar-list-item"><a href="">blog</a></li>
-                    <li class="nav-bar-list-item"><a href="">about me</a></li>
+                    <li class="nav-bar-list-item"><a href="#contact-form">contact</a></li>
                 </ul>
                 <div class="header-logo">
 
@@ -39,6 +38,7 @@
             </nav>
         </header>
         <main>
+            <!-- WELCOME SECTION -->
             <section class="welcome-section">
                 <div class="welcome-container">
                     <h1 class="welcome-heading">Hejsan</h1>
@@ -47,17 +47,75 @@
                     <div class="email-btn-container">
                         <div class="email-btn-container-box"><a id="email-btn-text" href="mailto: willewilkens@hotmail.se" >willewilkens@hotmail.se</a></div>
                     </div>
-                    <div class="art-arrow-container">
-                        <h1><a href="#art-section" class="art-arrow-text">art</a></h1>
-                        <a href="#art-section"><img class="art-arrow" src="images/Arrow-down.svg"></a>
+                    <div class="about-me-arrow-container">
+                        <h1><a href="#about-me-section" class="about-me-arrow-text">about me</a></h1>
+                        <a href="#about-me-section"><img class="about-me-arrow" src="images/Arrow-down.svg"></a>
                     </div>
                 </div>
             </section>
-            <section id="art-section">
-                <div id="sketch-holder"></div>
+            <hr>
+
+            <!-- ABOUT ME SECTION -->
+            <section class="about-me-section" id="about-me-section">
+                <div class="about-me-container">
+                    <img id="about-me-image" alt="an image of myself" src="images/about-me-image.png">
+                    <div class="about-me-text-container">
+                        <h1 class="about-me-header">THIS IS ME</h1>
+                        <p>My name is William, I am 26 years old and live in Stockholm. With a background in trading the financial markets I am now aspiring to become a frond-end developer.</p><br><br>
+                        <p>I am self-taught and started my journey of learning programming in August of 2021. Since December 2021 I have been focusing on studying web developent in a more serious manner. My current skills include basic understanding and application of <span>CSS</span>, <span>HTML</span>, <span>Javascript</span> and <span>Python.</span></p><br><br>
+                        <p>I am a highly analytical person with a creative mind and an eye for detail. I look forward to using my capabilities to create beautiful yet efficient web experiences.</p><br><br>
+                    </div>
+                </div>
+                <div class="portfolio-arrow-container">
+                    <h1><a href="#portfolio-section" class="portfolio-arrow-text">portfolio</a></h1>
+                    <a href="#portfolio-section"><img class="portfolio-arrow" src="images/Arrow-down.svg"></a>
+                </div>
+            </section>  
+            <hr>
+
+            <!-- PORTFOLIO SECTION -->
+            <section id="portfolio-section" class="portfolio-section">
+                <h1 style="font-size: 3rem">WOOPS NOTHING HERE YET</h1>
+
+
+                <div class="art-arrow-container">
+                    <h1><a href="#art-section" class="art-arrow-text">art</a></h1>
+                    <a href="#art-section"><img class="art-arrow" src="images/Arrow-down.svg"></a>
+                </div>
+            </section>
+            <hr>
+
+            <!-- ART SECTION -->
+            <section class="art-section "id="art-section">
+                <div id="sketch-holder" ></div>
+                <div class="dice-container"><img class="dice-image" alt="golden dice on a golden chain"src="images/dice.png"></div>
+                <div class="contact-arrow-container">
+                    <h1><a href="#contact-section" class="contact-arrow-text">contact me</a></h1>
+                    <a href="#contact-form"><img class="contact-arrow" src="images/Arrow-down.svg"></a>
+                </div>
+            </section>
+            <hr>
+
+            <!-- CONTACT SECTION -->
+            <section id="contact-form" class="contact-form-section">
+                <div class="contact-form-wrapper">
+                    <div class="contact-form-smiley">
+                        <img class="contact-image"src="images/face-purple.png">
+                    </div>
+                    <div class="contact-form">
+                        <h2>Say hi</h2>
+                        <form class="contact-form-container" action="https://formsubmit.co/willewilkens@hotmail.se" method="POST">
+                            <input class="contact-form-input" type="text" name="name" id="contact-name" placeholder="Name" required><br>
+                            <input class="contact-form-input" type="email" name="email" id="contact-email" placeholder="Email" required><br>
+                            <textarea class="contact-form-message" id="message" rows=   "7" placeholder="Message" required></textarea><br>
+                            <button type="submit" class="contact-form-submit" name="Submit" action="submit">Send</button>
+                        </form>
+                    </div>
+                </div>
             </section>
         </main>
+        <script src="https://smtpjs.com/v3/smtp.js" async defer></script>
         <script src="main.js" async defer></script>
         <script src="sketch.js" async defer></script>
         </body>
-</html>
+</html> 
