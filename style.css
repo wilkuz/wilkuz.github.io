@@ -382,15 +382,15 @@ li, a, button, h1, h3, p {
 
 .sketch-overlay {
     position: absolute;
+    display: flex;
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
     text-align: center;
     transition: 0.3s ease;
-}
-
-.sketch-overlay h1 {
-    padding-top: 5%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .sketch-overlay h1:hover {
@@ -422,8 +422,11 @@ li, a, button, h1, h3, p {
     overflow: hidden;
 }
 
+
 .dice-image {
     max-width: 100%;
+    min-height: 33vh;
+    object-fit: cover;
 }
 
 .contact-arrow-container {

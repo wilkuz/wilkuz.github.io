@@ -21,7 +21,7 @@
 //   	background("rgba(255,248,232,0.3)");
 //   for(let i=0; i < num; i++){
 //     let p = sketchParticles[i];
-//     let c = color(0,0,0);
+//     let c = color(171,135,255);
 //     fill(c);
 //     stroke(c);
 //     ellipse(p.x, p.y, 1, 1);

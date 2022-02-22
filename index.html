@@ -108,10 +108,17 @@
                     </div>
                     <div class="contact-form">
                         <h2>Say hi</h2>
-                        <form class="contact-form-container" action="https://formsubmit.co/willewilkens@hotmail.se" method="POST">
+                        <form class="contact-form-container" action="https://formsubmit.co/807e56f9afb25d2168a43bd46d629081" method="POST">
+                            <!-- Honeypot -->
+                            <input type="text" name="_honey" style="display: none;">
+                            <!-- disable captcha -->
+                            <input type="hidden" name="_captcha" value="false">
+                            <!-- redirect -->
+                            <input type="hidden" name="_next" value="https://wilkuz.github.io/">
+
                             <input class="contact-form-input" type="text" name="name" id="contact-name" placeholder="Name" required><br>
                             <input class="contact-form-input" type="email" name="email" id="contact-email" placeholder="Email" required><br>
-                            <textarea class="contact-form-message" id="message" rows=   "7" placeholder="Message" required></textarea><br>
+                            <textarea class="contact-form-message" id="message" name="message" rows="7" placeholder="Message" required></textarea><br>
                             <button type="submit" class="contact-form-submit" name="Submit" action="submit">Send</button>
                         </form>
                     </div>

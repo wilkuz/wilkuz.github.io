@@ -90,7 +90,7 @@ const headerLogo = document.getElementsByClassName('header-logo');
 const navListItems = document.getElementsByClassName('nav-bar-list-item');
 
 toggleContainer.addEventListener('click', (e) => {
-    // shift button position and switch to light mode
+    // IF DARKMODE IS ACTIVE
     if (toggleContainer.style.justifyContent === "flex-end") {
         toggleContainer.style.justifyContent = "flex-start";
         body.classList.remove("dark-mode-active");
@@ -99,7 +99,7 @@ toggleContainer.addEventListener('click', (e) => {
             item.style.border = "1px dashed black";
         }
         // switch arrows to black
-        let arrows = document.querySelectorAll('img[src="images/Arrow-down.svg"]');
+        let arrows = document.querySelectorAll('img[src="images/Arrow-down-darkmode.png"]');
         for (let arrow of arrows) {
             arrow.src = "images/Arrow-down.svg";
         }
@@ -107,7 +107,8 @@ toggleContainer.addEventListener('click', (e) => {
         // let face = document.querySelector(".contact-image");
         // face.src = "images/face.png"
     }
-    //shift button position and switch to dark mode
+
+    // IF LIGHTMODE IS ACTIVE
     else {
         toggleContainer.style.justifyContent = "flex-end";
         document.body.setAttribute("class", "dark-mode-active");
@@ -137,4 +138,13 @@ const sketch = document.getElementById('#sketch-holder');
 sketchBtn.addEventListener('click', () => {
     sketchOverlay.style.backgroundColor = "transparent";
     sketchBtn.style.display = "none";
-})
+}, {
+    once: true
+});
+
+sketchOverlay.addEventListener('click', () => {
+    sketchOverlay.style.backgroundColor = "transparent";
+    sketchBtn.style.display = "none";
+}, {
+    once: true // This will fire the event once and remove it afterwards
+});
