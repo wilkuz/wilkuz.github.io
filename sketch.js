@@ -1,20 +1,20 @@
-// let sketchParticles = [];
-// const num = 1000;
+let sketchParticles = [];
+const num = 1000;
 
-// function setup() {
-//   var cnv = createCanvas(windowWidth, windowHeight/3);
-//   cnv.style('display', 'block');
-//   cnv.style('top', "125vh");
-//   cnv.parent("#sketch-holder");
-//   if (windowWidth < 380) {
-//     cnv.style('display', 'none');
-//   }
-//   for(let i=0; i < num; i ++) {
-//     sketchParticles.push(createVector(random(width),
-//     random(height)));
-//   }
-//   stroke(255);
-// }
+function setup() {
+  var cnv = createCanvas(windowWidth, windowHeight/3);
+  cnv.style('display', 'block');
+  cnv.style('top', "125vh");
+   cnv.parent("#sketch-holder");
+   if (windowWidth < 380) {
+     cnv.style('display', 'none');
+   }
+   for(let i=0; i < num; i ++) {
+     sketchParticles.push(createVector(random(width),
+     random(height)));
+   }
+   stroke(255);
+ }
 
 // function draw() {
 //   let noiseScale = 0.01;
@@ -36,30 +36,30 @@
 //   }
 // }
 
-// function mouseReleased(scale) {
-//   noiseSeed(millis());
-// }
+ function mouseReleased(scale) {
+   noiseSeed(millis());
+ }
 
-// function onScreen(v) {
-//   return v.x >= 0 && v.x <= width && v.y >= 0 && v.y <= height;
-// }
+ function onScreen(v) {
+   return v.x >= 0 && v.x <= width && v.y >= 0 && v.y <= height;
+ }
 
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeigth/2);
-// }
+ function windowResized() {
+   resizeCanvas(windowWidth, windowHeigth/2);
+ }
 
-function setup() {
-    var cnv = createCanvas(windowWidth, windowHeight/3);
-    cnv.style('display', 'block');
-    cnv.style('top', "125vh");
-    cnv.parent("#sketch-holder");
-    if (windowWidth < 380) {
-      cnv.style('display', 'none');
-    }
-    for(let i=0; i < num; i ++) {
-      sketchParticles.push(createVector(random(width),
-      random(height)));
-    }
-    stroke(255);
-    rectangle(1, 1, 150, 150);
-  }
+//function setup() {
+//    var cnv = createCanvas(windowWidth, windowHeight/3);
+//    cnv.style('display', 'block');
+//    cnv.style('top', "125vh");
+//    cnv.parent("#sketch-holder");
+//    if (windowWidth < 380) {
+//      cnv.style('display', 'none');
+//    }
+//    for(let i=0; i < num; i ++) {
+//      sketchParticles.push(createVector(random(width),
+//      random(height)));
+//    }
+//    stroke(255);
+//    rectangle(1, 1, 150, 150);
+//  }
