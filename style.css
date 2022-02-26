@@ -567,8 +567,5 @@ li, a, button, h1, h3, p {
     padding: 0 1em;
     font-size: 110%;
     font-weight: 300;
-}
-
-.success-message-Xspan:hover {
     cursor: pointer;
 }
