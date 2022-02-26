@@ -150,6 +150,7 @@ li, a, button, h1, h3, p {
         flex-shrink: 0;
         top: 0%;
         margin-bottom: 1em;
+        padding-bottom: .3em;
     }
 
     .nav-bar-list {
@@ -175,6 +176,7 @@ li, a, button, h1, h3, p {
 .welcome-section {
     padding-bottom: 5rem;
     min-height: 100vh;
+    padding-top: 1em;
 }
 
 .welcome-container {
@@ -559,4 +561,10 @@ li, a, button, h1, h3, p {
 .success-bar p {
     background-color: rgb(95, 216, 95) !important;
     color: black !important
+}
+
+.success-message-Xspan {
+    padding: 0 1em;
+    font-size: 110%;
+    font-weight: 300;
 }
