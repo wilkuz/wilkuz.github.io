@@ -1,15 +1,16 @@
 /* --- GAME SETUP -- */
+const countDownDiv = document.querySelector('#game-overlay');
+const countDownText = document.querySelector('#count-down-header')
 const newGameBtn = document.getElementById("new-game-btn");
 const canvas = document.getElementById('game-canvas');
-canvas.width = document.body.clientWidth;
-canvas.height = document.body.clientHeight;
 let ctx = canvas.getContext('2d');
 
+startGame();
 
 // set middle line/net
-const NET_LINE_HEIGHT = 50;
+const NET_LINE_HEIGHT = 80;
 const NET_LINE_WIDTH = 2;   
-const NET_LINE_GAP = 11;
+const NET_LINE_GAP = 20;
 const NET_LINE_COLOR = "white";
 const BACKGROUND_COLOR = "black";
 
@@ -35,7 +36,7 @@ let ballSpeedY = Math.random() * 20 * upDown;
 const RACKET_HEIGHT = 100;
 const RACKET_WIDTH = 5;
 const RACKET_COLOR = "white";
-const RACKET_GAP = 2;
+const RACKET_GAP = 10;
 
 const RACKET_LEFT_X = RACKET_GAP;
 const RACKET_RIGHT_X = canvas.width - RACKET_WIDTH - RACKET_GAP;
@@ -69,7 +70,7 @@ function draw() {
     drawRect(0,0,canvas.width, canvas.height, BACKGROUND_COLOR);
 
     // draw middle line/net
-    for (let i = 0; i < canvas.height + NET_LINE_HEIGHT + NET_LINE_GAP; i += NET_LINE_HEIGHT + NET_LINE_GAP) {
+    for (let i = NET_LINE_GAP / 2; i < canvas.height + NET_LINE_HEIGHT + NET_LINE_GAP; i += NET_LINE_HEIGHT + NET_LINE_GAP) {
         drawRect(
             (canvas.width/2) - (NET_LINE_WIDTH/2),
             i,
@@ -83,9 +84,9 @@ function draw() {
     ctx.fillStyle = "white";
     ctx.font = "2em Nova Square"
     let currentScoreText = currentScoreLeft.toString();
-    ctx.fillText(currentScoreText, canvas.width*0.2, canvas.height*0.2);
+    ctx.fillText(currentScoreText, canvas.width*0.4, canvas.height*0.2);
     currentScoreText = currentScoreRight.toString();
-    ctx.fillText(currentScoreText, canvas.width*0.8, canvas.height*0.2);
+    ctx.fillText(currentScoreText, canvas.width*0.6, canvas.height*0.2);
 
 
     // draw ball
@@ -103,24 +104,24 @@ function draw() {
 function move() {
     // horizontal movement
     // if ball is max left, check if is in range of racket
-    if (ballX <= 0 + ballWidth + RACKET_WIDTH && inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
+    if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
         // reverse direction
         ballSpeedX = ballSpeedX * -1;
     }
-    else if (ballX <= 0 + ballWidth + RACKET_WIDTH && !inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
+    else if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && !inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
         currentScoreRight += 1;
         currentScoreRight >= 5 ? gameReset(): ballReset();
     }
-    ballX += ballSpeedX;
 
     // if ball is max right, check if is in range of racket
-    if (ballX >= canvas.width - ballWidth - RACKET_WIDTH && inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
+    if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
         ballSpeedX = ballSpeedX * -1;
     }
-    else if (ballX >= canvas.width - ballWidth - RACKET_WIDTH && !inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
+    else if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && !inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
         currentScoreLeft += 1;
         currentScoreLeft >= 5 ? gameReset(): ballReset();
     }
+    ballX += ballSpeedX;
 
     //vertical movement
     ballY > canvas.height - ballWidth ? ballSpeedY = ballSpeedY * -1: null;
@@ -157,7 +158,7 @@ async function gameReset() {
     ballSpeedX = 0;
     ballSpeedY = 0;
     await newGameClicked(newGameBtn, 'click');
-    ballSpeedX = -7;
+    ballSpeedX = -20;
     upDown = Math.random() > 0.5 ? -1: 1
     ballSpeedY = Math.random() * 7 * upDown;
 }
@@ -170,6 +171,18 @@ function newGameClicked(item, event) {
         }
         item.addEventListener(event, listener);
     })
+}
+
+async function startGame () {
+    await wait(1000);
+}
+
+function wait(time) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
 }
 
 
