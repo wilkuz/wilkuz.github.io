@@ -1,11 +1,10 @@
+
 /* --- GAME SETUP -- */
-const countDownDiv = document.querySelector('#game-overlay');
-const countDownText = document.querySelector('#count-down-header')
+const displayWinnerDiv = document.querySelector('#game-overlay');
+const displayWinnerText = document.querySelector('#winner-header');
 const newGameBtn = document.getElementById("new-game-btn");
 const canvas = document.getElementById('game-canvas');
 let ctx = canvas.getContext('2d');
-
-startGame();
 
 // set middle line/net
 const NET_LINE_HEIGHT = 80;
@@ -17,6 +16,7 @@ const BACKGROUND_COLOR = "black";
 // init score
 let currentScoreLeft = 0;
 let currentScoreRight = 0;
+let winner = "";
 
 // init ball to middle and set speed
 let ballWidth = 10;
@@ -26,7 +26,7 @@ let ballY = canvas.height / 2;
 let ballColor = "white";
 
 // set initial direction to left
-let ballSpeedX = -20;
+let ballSpeedX = -10;
 
 // set random initial Y direction 
 let upDown = Math.random() > 0.5 ? -1: 1
@@ -55,12 +55,25 @@ canvas.addEventListener("mousemove", e => {
     racketLeftY + RACKET_HEIGHT > canvas.height ? racketLeftY = canvas.height - RACKET_HEIGHT: null;
     racketLeftY < 0 ? racketLeftY = 0: null;
 })
-let gameFPS = 30;
-setInterval(() => {
-    draw(); 
-    move();
-}, 1000/gameFPS);
 
+
+// start the game
+let gameFPS = 60;
+let gameState = "active";
+
+if (gameState == "active") {
+    setInterval(() => {
+        draw(); 
+        move();
+    }, 1000/gameFPS);
+};
+
+window.addEventListener('keydown', e => {
+    console.log(e.key);
+    if (e.key == 80) {
+        gameState = "pause";
+    }
+})
 
 
 /* --- GAME FUNCTIONS --- */
@@ -110,7 +123,14 @@ function move() {
     }
     else if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && !inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
         currentScoreRight += 1;
-        currentScoreRight >= 5 ? gameReset(): ballReset();
+        if (currentScoreRight >= 5) {
+            newGameBtn.classList.remove("hidden");
+            displayWinnerDiv.classList.remove("hidden");
+            displayWinnerText.textContent = "Player 2 wins!"
+            gameReset();
+        } else {
+            ballReset();
+        }
     }
 
     // if ball is max right, check if is in range of racket
@@ -119,7 +139,14 @@ function move() {
     }
     else if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && !inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
         currentScoreLeft += 1;
-        currentScoreLeft >= 5 ? gameReset(): ballReset();
+        if (currentScoreLeft >= 5) {
+            newGameBtn.classList.remove("hidden");
+            displayWinnerDiv.classList.remove("hidden");
+            displayWinnerText.textContent = "Player 1 wins!"
+            gameReset();
+        } else {
+            ballReset();
+        }
     }
     ballX += ballSpeedX;
 
@@ -127,6 +154,8 @@ function move() {
     ballY > canvas.height - ballWidth ? ballSpeedY = ballSpeedY * -1: null;
     ballY < 0 + ballWidth ? ballSpeedY = ballSpeedY * -1: null;
     ballY += ballSpeedY;
+
+    racketRightY = ballY - RACKET_HEIGHT / 2;
 }
 
 function getMousePos(evt) {
@@ -147,47 +176,32 @@ function inRange(x, min, max) {
 function ballReset() {
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
-    setTimeout(() => {
-
-    })
 }
 
 async function gameReset() {
+    currentScoreLeft = 0;
+    currentScoreRight = 0;
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
     ballSpeedX = 0;
     ballSpeedY = 0;
+    racketRightY = 0;
     await newGameClicked(newGameBtn, 'click');
-    ballSpeedX = -20;
+    ballSpeedX = -10;
     upDown = Math.random() > 0.5 ? -1: 1
-    ballSpeedY = Math.random() * 7 * upDown;
+    ballSpeedY = Math.random() * 20 * upDown;
 }
 
 function newGameClicked(item, event) {
     return new Promise((resolve) => {
         const listener = () => {
         item.removeEventListener(event, listener);
+        newGameBtn.classList.add("hidden");
+        displayWinnerDiv.classList.add("hidden");
         resolve();
         }
         item.addEventListener(event, listener);
     })
-}
-
-async function startGame () {
-    await wait(1000);
-    countDownText.textContent = "2";
-    await wait(1000);
-    countDownText.textContent = "1";
-    await wait(1000);
-    countDownDiv.classList.add("hidden");
-}
-
-function wait(time) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve();
-        }, time);
-    });
 }
 
 

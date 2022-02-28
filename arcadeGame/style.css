@@ -49,7 +49,8 @@ body {
 }
 
 .game-overlay-active h1 {
-    font-size: 7em;
+    font-size: 2em;
+    text-align: center;
 }
 
 .hidden {
