@@ -175,6 +175,11 @@ function newGameClicked(item, event) {
 
 async function startGame () {
     await wait(1000);
+    countDownText.textContent = "2";
+    await wait(1000);
+    countDownText.textContent = "1";
+    await wait(1000);
+    countDownDiv.classList.add("hidden");
 }
 
 function wait(time) {
