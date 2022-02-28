@@ -1,16 +1,21 @@
 /* --- GAME SETUP -- */
 const newGameBtn = document.getElementById("new-game-btn");
 const canvas = document.getElementById('game-canvas');
+canvas.width = document.body.clientWidth;
+canvas.height = document.body.clientHeight;
 let ctx = canvas.getContext('2d');
 
 
 // set middle line/net
 const NET_LINE_HEIGHT = 50;
-const NET_LINE_WIDTH = 2;
+const NET_LINE_WIDTH = 2;   
 const NET_LINE_GAP = 11;
 const NET_LINE_COLOR = "white";
 const BACKGROUND_COLOR = "black";
 
+// init score
+let currentScoreLeft = 0;
+let currentScoreRight = 0;
 
 // init ball to middle and set speed
 let ballWidth = 10;
@@ -20,11 +25,11 @@ let ballY = canvas.height / 2;
 let ballColor = "white";
 
 // set initial direction to left
-let ballSpeedX = -7;
+let ballSpeedX = -20;
 
 // set random initial Y direction 
 let upDown = Math.random() > 0.5 ? -1: 1
-let ballSpeedY = Math.random() * 7 * upDown;
+let ballSpeedY = Math.random() * 20 * upDown;
 
 // init rackets
 const RACKET_HEIGHT = 100;
@@ -74,6 +79,15 @@ function draw() {
         );
     };
 
+    //draw score
+    ctx.fillStyle = "white";
+    ctx.font = "2em Nova Square"
+    let currentScoreText = currentScoreLeft.toString();
+    ctx.fillText(currentScoreText, canvas.width*0.2, canvas.height*0.2);
+    currentScoreText = currentScoreRight.toString();
+    ctx.fillText(currentScoreText, canvas.width*0.8, canvas.height*0.2);
+
+
     // draw ball
     drawCircle(ballX, ballY, ballWidth, ballColor);
 
@@ -94,7 +108,8 @@ function move() {
         ballSpeedX = ballSpeedX * -1;
     }
     else if (ballX <= 0 + ballWidth + RACKET_WIDTH && !inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
-        ballReset();
+        currentScoreRight += 1;
+        currentScoreRight >= 5 ? gameReset(): ballReset();
     }
     ballX += ballSpeedX;
 
@@ -103,7 +118,8 @@ function move() {
         ballSpeedX = ballSpeedX * -1;
     }
     else if (ballX >= canvas.width - ballWidth - RACKET_WIDTH && !inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
-        ballReset();
+        currentScoreLeft += 1;
+        currentScoreLeft >= 5 ? gameReset(): ballReset();
     }
 
     //vertical movement
@@ -127,7 +143,15 @@ function inRange(x, min, max) {
     return x >= min && x <= max;
 }
 
-async function ballReset() {
+function ballReset() {
+    ballX = canvas.width / 2;
+    ballY = canvas.height / 2;
+    setTimeout(() => {
+
+    })
+}
+
+async function gameReset() {
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
     ballSpeedX = 0;
