@@ -3,6 +3,7 @@
 const displayWinnerDiv = document.querySelector('#game-overlay');
 const displayWinnerText = document.querySelector('#winner-header');
 const newGameBtn = document.getElementById("new-game-btn");
+const pauseBtn = document.getElementById("pause-game-btn");
 const canvas = document.getElementById('game-canvas');
 let ctx = canvas.getContext('2d');
 
@@ -17,6 +18,7 @@ const BACKGROUND_COLOR = "black";
 let currentScoreLeft = 0;
 let currentScoreRight = 0;
 let winner = "";
+let gameState = "paused";
 
 // init ball to middle and set speed
 let ballWidth = 10;
@@ -59,21 +61,12 @@ canvas.addEventListener("mousemove", e => {
 
 // start the game
 let gameFPS = 60;
-let gameState = "active";
 
-if (gameState == "active") {
-    setInterval(() => {
-        draw(); 
-        move();
-    }, 1000/gameFPS);
-};
+setInterval(() => {
+    draw(); 
+    move();
+}, 1000/gameFPS);
 
-window.addEventListener('keydown', e => {
-    console.log(e.key);
-    if (e.key == 80) {
-        gameState = "pause";
-    }
-})
 
 
 /* --- GAME FUNCTIONS --- */
@@ -115,47 +108,49 @@ function draw() {
 
 
 function move() {
-    // horizontal movement
-    // if ball is max left, check if is in range of racket
-    if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
-        // reverse direction
-        ballSpeedX = ballSpeedX * -1;
-    }
-    else if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && !inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
-        currentScoreRight += 1;
-        if (currentScoreRight >= 5) {
-            newGameBtn.classList.remove("hidden");
-            displayWinnerDiv.classList.remove("hidden");
-            displayWinnerText.textContent = "Player 2 wins!"
-            gameReset();
-        } else {
-            ballReset();
+    if (gameState == "running") {
+        // horizontal movement
+        // if ball is max left, check if is in range of racket
+        if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
+            // reverse direction
+            ballSpeedX = ballSpeedX * -1;
         }
-    }
-
-    // if ball is max right, check if is in range of racket
-    if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
-        ballSpeedX = ballSpeedX * -1;
-    }
-    else if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && !inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
-        currentScoreLeft += 1;
-        if (currentScoreLeft >= 5) {
-            newGameBtn.classList.remove("hidden");
-            displayWinnerDiv.classList.remove("hidden");
-            displayWinnerText.textContent = "Player 1 wins!"
-            gameReset();
-        } else {
-            ballReset();
+        else if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && !inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
+            currentScoreRight += 1;
+            if (currentScoreRight >= 5) {
+                newGameBtn.classList.remove("hidden");
+                displayWinnerDiv.classList.remove("hidden");
+                displayWinnerText.textContent = "Player 2 wins!"
+                gameReset();
+            } else {
+                ballReset();
+            }
         }
-    }
-    ballX += ballSpeedX;
 
-    //vertical movement
-    ballY > canvas.height - ballWidth ? ballSpeedY = ballSpeedY * -1: null;
-    ballY < 0 + ballWidth ? ballSpeedY = ballSpeedY * -1: null;
-    ballY += ballSpeedY;
+        // if ball is max right, check if is in range of racket
+        if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
+            ballSpeedX = ballSpeedX * -1;
+        }
+        else if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && !inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
+            currentScoreLeft += 1;
+            if (currentScoreLeft >= 5) {
+                newGameBtn.classList.remove("hidden");
+                displayWinnerDiv.classList.remove("hidden");
+                displayWinnerText.textContent = "Player 1 wins!"
+                gameReset();
+            } else {
+                ballReset();
+            }
+        }
+        ballX += ballSpeedX;
 
-    racketRightY = ballY - RACKET_HEIGHT / 2;
+        //vertical movement
+        ballY > canvas.height - ballWidth ? ballSpeedY = ballSpeedY * -1: null;
+        ballY < 0 + ballWidth ? ballSpeedY = ballSpeedY * -1: null;
+        ballY += ballSpeedY;
+
+        racketRightY = ballY - RACKET_HEIGHT / 2;
+    };
 }
 
 function getMousePos(evt) {
@@ -173,10 +168,28 @@ function inRange(x, min, max) {
     return x >= min && x <= max;
 }
 
-function ballReset() {
+
+function displayCountDown(num, ms) {
+    return new Promise((resolve) => {
+        displayWinnerDiv.classList.remove("hidden");
+        displayWinnerText.textContent = num;
+        setTimeout(resolve, ms);
+    })
+}
+
+async function ballReset() {
+    gameState = "paused";
+    await displayCountDown("3", 1000);
+    await displayCountDown("2", 1000);
+    await displayCountDown("1", 1000);
+    displayWinnerDiv.classList.add("hidden");
+    pauseBtn.classList.remove("hidden");
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
+    gameState = "running";
 }
+// initialize the game with ballReset and a countdown
+ballReset();
 
 async function gameReset() {
     currentScoreLeft = 0;
@@ -187,6 +200,7 @@ async function gameReset() {
     ballSpeedY = 0;
     racketRightY = 0;
     await newGameClicked(newGameBtn, 'click');
+    ballReset();
     ballSpeedX = -10;
     upDown = Math.random() > 0.5 ? -1: 1
     ballSpeedY = Math.random() * 20 * upDown;
@@ -199,6 +213,52 @@ function newGameClicked(item, event) {
         newGameBtn.classList.add("hidden");
         displayWinnerDiv.classList.add("hidden");
         resolve();
+        }
+        item.addEventListener(event, listener);
+    })
+}
+
+// pause/unpause event listeners
+pauseBtn.addEventListener('click', gamePause, {once:true});
+document.addEventListener('keydown', gamePause, {once:true});
+
+async function gamePause(evt) {
+    if (evt.target == pauseBtn) {
+        let resumedBallSpeedX = ballSpeedX;
+        let resumedBallSpeedY = ballSpeedY;
+        ballSpeedX = 0;
+        ballSpeedY = 0;
+        pauseBtn.textContent = "Resume";
+        displayWinnerDiv.classList.remove("hidden");
+        displayWinnerText.textContent = "Game paused"
+        await unpauseClicked(pauseBtn, 'click');
+        displayWinnerDiv.classList.add("hidden");
+        pauseBtn.textContent = "Pause [P]";
+        ballSpeedX = resumedBallSpeedX;
+        ballSpeedY = resumedBallSpeedY;
+        pauseBtn.addEventListener('click', gamePause, {once:true});
+    } else if (evt.key == "p") {
+        let resumedBallSpeedX = ballSpeedX;
+        let resumedBallSpeedY = ballSpeedY;
+        ballSpeedX = 0;
+        ballSpeedY = 0;
+        pauseBtn.textContent = "Resume";
+        displayWinnerDiv.classList.remove("hidden");
+        displayWinnerText.textContent = "Game paused"
+        await unpauseClicked(pauseBtn, 'click');
+        displayWinnerDiv.classList.add("hidden");
+        pauseBtn.textContent = "Pause [P]";
+        ballSpeedX = resumedBallSpeedX;
+        ballSpeedY = resumedBallSpeedY;
+        document.addEventListener('keydown', gamePause, {once:true});
+    };
+}
+
+function unpauseClicked(item, event) {
+    return new Promise((resolve) => {
+        const listener = () => {
+            item.removeEventListener(event, listener);
+            resolve();
         }
         item.addEventListener(event, listener);
     })
