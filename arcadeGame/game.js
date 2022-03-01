@@ -199,6 +199,7 @@ async function gameReset() {
     ballSpeedX = 0;
     ballSpeedY = 0;
     racketRightY = 0;
+    pauseBtn.classList.add("hidden");
     await newGameClicked(newGameBtn, 'click');
     ballReset();
     ballSpeedX = -10;
@@ -219,38 +220,31 @@ function newGameClicked(item, event) {
 }
 
 // pause/unpause event listeners
-pauseBtn.addEventListener('click', gamePause, {once:true});
-document.addEventListener('keydown', gamePause, {once:true});
+pauseBtn.addEventListener('click', gamePause);
+document.addEventListener('keydown', gamePause);
 
 async function gamePause(evt) {
-    if (evt.target == pauseBtn) {
-        let resumedBallSpeedX = ballSpeedX;
-        let resumedBallSpeedY = ballSpeedY;
-        ballSpeedX = 0;
-        ballSpeedY = 0;
+    console.log(evt.code);
+    if (evt.type == 'click' && gameState == "running") {
+        // save ballspeed for resuming later and set current ballspeed to 0
+        gameState = "paused";
+        // change button to resume
         pauseBtn.textContent = "Resume";
         displayWinnerDiv.classList.remove("hidden");
         displayWinnerText.textContent = "Game paused"
         await unpauseClicked(pauseBtn, 'click');
+        // gameState = "running";
         displayWinnerDiv.classList.add("hidden");
         pauseBtn.textContent = "Pause [P]";
-        ballSpeedX = resumedBallSpeedX;
-        ballSpeedY = resumedBallSpeedY;
-        pauseBtn.addEventListener('click', gamePause, {once:true});
-    } else if (evt.key == "p") {
-        let resumedBallSpeedX = ballSpeedX;
-        let resumedBallSpeedY = ballSpeedY;
-        ballSpeedX = 0;
-        ballSpeedY = 0;
+    } else if (evt.key == "p" && gameState == "running") {
+        gameState = "paused";
         pauseBtn.textContent = "Resume";
         displayWinnerDiv.classList.remove("hidden");
         displayWinnerText.textContent = "Game paused"
         await unpauseClicked(pauseBtn, 'click');
+        // gameState = "running";
         displayWinnerDiv.classList.add("hidden");
         pauseBtn.textContent = "Pause [P]";
-        ballSpeedX = resumedBallSpeedX;
-        ballSpeedY = resumedBallSpeedY;
-        document.addEventListener('keydown', gamePause, {once:true});
     };
 }
 
@@ -258,6 +252,7 @@ function unpauseClicked(item, event) {
     return new Promise((resolve) => {
         const listener = () => {
             item.removeEventListener(event, listener);
+            gameState = "running";
             resolve();
         }
         item.addEventListener(event, listener);
