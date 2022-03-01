@@ -90,7 +90,7 @@ function draw() {
     ctx.fillStyle = "white";
     ctx.font = "2em Nova Square"
     let currentScoreText = currentScoreLeft.toString();
-    ctx.fillText(currentScoreText, canvas.width*0.4, canvas.height*0.2);
+    ctx.fillText(currentScoreText, canvas.width*0.38, canvas.height*0.2);
     currentScoreText = currentScoreRight.toString();
     ctx.fillText(currentScoreText, canvas.width*0.6, canvas.height*0.2);
 
