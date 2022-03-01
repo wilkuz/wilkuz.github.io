@@ -351,6 +351,91 @@ li, a, button, h1, h3, p {
     text-align: center;
 }
 
+.portfolio-container {
+    display: grid;
+    justify-content: center;
+    grid: auto;
+    align-items: center;
+    gap: 2rem;
+}
+
+.portfolio-card {
+    max-width: 20rem;
+    height: 25rem;
+    transition: transform 500ms;
+}
+
+#pong-card {
+    background-image: url(images/pong-project-image.JPG);
+    background-size: cover;
+}
+
+.card-overlay {
+    position: relative;
+    top: 40%;
+    text-align: center;
+    background-color: transparent !important;
+}
+
+.card-overlay h1 {
+    padding: .5rem 1rem;
+    background: var(--main-bg-color);
+    max-width: 70%;
+    margin: 0 auto;
+}
+
+.card-overlay h1 span {
+    font-size: 50%;
+}
+
+
+.portfolio-item-btn-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 2rem 1rem;
+    background-color: transparent !important;
+}
+
+.portfolio-btn {
+    font-weight: bold;
+    padding: 1rem;
+    background-color: var(--main-bg-color);
+    
+    box-shadow: 0 0 10px var(--main-bg-color);
+}
+
+.portfolio-item-header {
+    background-color: transparent !important;
+}
+
+@media screen and (min-width:750px) {
+    .portfolio-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .portfolio-card {
+        margin: 0 auto;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .portfolio-container {
+        display: flex;
+        justify-content: space-evenly;
+        padding: 0 2rem;
+    }
+
+    .card-overlay {
+        top: 50%;
+    }
+
+    .portfolio-btn {
+        cursor: pointer;
+        width: 100%
+    }
+}
+
 .art-arrow-container {
     margin-left: auto;
     margin-right: auto;
