@@ -224,7 +224,6 @@ pauseBtn.addEventListener('click', gamePause);
 document.addEventListener('keydown', gamePause);
 
 async function gamePause(evt) {
-    console.log(evt.code);
     if (evt.type == 'click' && gameState == "running") {
         // save ballspeed for resuming later and set current ballspeed to 0
         gameState = "paused";
