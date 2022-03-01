@@ -10,6 +10,7 @@
 
 body {
     background-color: rgb(0, 0, 0);
+    /* background-image: url(images/); */
 }
 
 .game-container {
@@ -31,6 +32,7 @@ body {
     color: white;
     font-size: 1em;
     padding: .2em;
+    cursor: pointer;
 }
 
 #game-canvas {
