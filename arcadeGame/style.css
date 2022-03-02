@@ -10,8 +10,19 @@
 
 body {
     background-color: rgb(0, 0, 0);
-    /* background-image: url(images/); */
 }
+
+/* body::after {
+    content: "";
+    background: url(space-background.jpeg);
+    opacity: 0.3    ;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+  } */
 
 .game-container {
     height: 90vh;
@@ -57,4 +68,20 @@ body {
 
 .hidden {
     display: none !important;
+}
+
+.audio-controls {
+    position: fixed;
+    padding: 2em;
+    display: flex;
+    gap: 3em;
+}
+
+.audio-control-btn {
+    cursor: pointer;
+}
+
+.audio-control-btn {
+    background-color: black;
+    border: none;
 }

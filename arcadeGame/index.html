@@ -10,9 +10,21 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/1c8a830042.js" crossorigin="anonymous"></script>
         <script src="game.js" defer></script>
     </head>
     <body>
+        <div class="audio-controls">
+            <div class="audio-mute audio-control-btn">
+                <i class="fa-solid fa-volume-high playing audio-icon" id="audioToggle"></i>
+            </div>
+            <div class="audio-up audio-control-btn" id="audioUp">
+                <i class="fa-solid fa-plus audio-icon" id="audioUp"></i>
+            </div>
+            <div class="audio-down audio-control-btn">
+                <i class="fa-solid fa-minus audio-icon" id="audioDown"></i>
+            </div>
+        </div>
         <div class="main-wrapper">
             <div class="game-container">
                 <canvas id="game-canvas" width="1200" height="700"></canvas>
@@ -25,5 +37,9 @@
                 <button id="pause-game-btn" class="button hidden">Pause [P]</button>
             </div>
         </div>
+        <audio src="sounds/plop.mp3" id="ballHit"></audio>
+        <audio src="sounds/countdownAudio.mp3" id="countdownAudio"></audio>
+        <audio src="sounds/background-music.mp3" id="backgroundMusic"></audio>
+        
     </body>
 </html>

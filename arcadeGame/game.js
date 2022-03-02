@@ -7,6 +7,48 @@ const pauseBtn = document.getElementById("pause-game-btn");
 const canvas = document.getElementById('game-canvas');
 let ctx = canvas.getContext('2d');
 
+// init sound variables
+const ballHit = document.getElementById('ballHit');
+ballHit.volume = 0.2;
+const countdownAudio = document.getElementById('countdownAudio');
+countdownAudio.volume = 0.2;
+const backgroundMusic = document.getElementById('backgroundMusic');
+backgroundMusic.volume = 0.2;
+backgroundMusic.play();
+
+const audioToggle = document.getElementById('audioToggle');
+const audioUp = document.getElementById('audioUp');
+const audioDown = document.getElementById('audioDown');
+
+audioToggle.addEventListener('click', () => {
+    if (audioToggle.classList.contains('playing')) {
+        audioToggle.classList.remove('fa-volume-high');
+        audioToggle.classList.add('fa-volume-xmark');
+        audioToggle.classList.remove('playing');
+        audioToggle.classList.add('paused')
+        backgroundMusic.pause();
+        ballHit.volume = 0;
+    } else {
+        audioToggle.classList.remove('fa-volume-xmark');
+        audioToggle.classList.add('fa-volume-high');
+        audioToggle.classList.remove('paused');
+        audioToggle.classList.add('playing');
+        backgroundMusic.play();
+        ballHit.volume = 0.2;
+    }
+    
+});
+
+audioUp.addEventListener('click', () => {
+    backgroundMusic.volume <= 1 ? backgroundMusic.volume += 0.05: null;
+});
+
+audioDown.addEventListener('click', () => {
+    backgroundMusic.volume >= 0 ? backgroundMusic.volume -= 0.05: null;
+})
+
+
+
 // set middle line/net
 const NET_LINE_HEIGHT = 80;
 const NET_LINE_WIDTH = 2;   
@@ -114,6 +156,7 @@ function move() {
         if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
             // reverse direction
             ballSpeedX = ballSpeedX * -1;
+            ballHit.play();
         }
         else if (ballX <= 0 + ballWidth + RACKET_WIDTH + RACKET_GAP && !inRange(ballY, racketLeftY, racketLeftY + RACKET_HEIGHT)) {
             currentScoreRight += 1;
@@ -129,7 +172,9 @@ function move() {
 
         // if ball is max right, check if is in range of racket
         if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
+            // reverse direction
             ballSpeedX = ballSpeedX * -1;
+            ballHit.play();
         }
         else if (ballX >= canvas.width - ballWidth - RACKET_WIDTH - RACKET_GAP && !inRange(ballY, racketRightY, racketRightY + RACKET_HEIGHT)) {
             currentScoreLeft += 1;
