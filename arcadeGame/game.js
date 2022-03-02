@@ -277,7 +277,6 @@ async function gamePause(evt) {
         displayWinnerDiv.classList.remove("hidden");
         displayWinnerText.textContent = "Game paused"
         await unpauseClicked(pauseBtn, 'click');
-        // gameState = "running";
         displayWinnerDiv.classList.add("hidden");
         pauseBtn.textContent = "Pause [P]";
     } else if (evt.key == "p" && gameState == "running") {
@@ -286,7 +285,6 @@ async function gamePause(evt) {
         displayWinnerDiv.classList.remove("hidden");
         displayWinnerText.textContent = "Game paused"
         await unpauseClicked(pauseBtn, 'click');
-        // gameState = "running";
         displayWinnerDiv.classList.add("hidden");
         pauseBtn.textContent = "Pause [P]";
     };
