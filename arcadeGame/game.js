@@ -233,8 +233,10 @@ async function ballReset() {
     ballY = canvas.height / 2;
     gameState = "running";
 }
-// initialize the game with ballReset and a countdown
-ballReset();
+// initialize the game with a start btn and then ballreset
+
+/************* ADD A START BUTTON HERE*********/
+// ballReset();
 
 async function gameReset() {
     currentScoreLeft = 0;
