@@ -50,6 +50,18 @@ body {
     border: .2em dashed white;
 }
 
+.start-game-btn {
+    width: 350px;
+    height: 200px;
+    border: .25em solid white;
+    position: fixed;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .game-overlay-active {
     width: 200px;
     height: 200px;

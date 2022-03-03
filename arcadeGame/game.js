@@ -5,6 +5,8 @@ const displayWinnerText = document.querySelector('#winner-header');
 const newGameBtn = document.getElementById("new-game-btn");
 const pauseBtn = document.getElementById("pause-game-btn");
 const canvas = document.getElementById('game-canvas');
+const startGameBtn = document.getElementById('start-game-btn');
+const startGameOverlay = document.getElementById('start-game-overlay');
 let ctx = canvas.getContext('2d');
 
 // init sound variables
@@ -14,7 +16,6 @@ const countdownAudio = document.getElementById('countdownAudio');
 countdownAudio.volume = 0.2;
 const backgroundMusic = document.getElementById('backgroundMusic');
 backgroundMusic.volume = 0.2;
-backgroundMusic.play();
 
 const audioToggle = document.getElementById('audioToggle');
 const audioUp = document.getElementById('audioUp');
@@ -61,6 +62,7 @@ let currentScoreLeft = 0;
 let currentScoreRight = 0;
 let winner = "";
 let gameState = "paused";
+let ballResetRunning = false;
 
 // init ball to middle and set speed
 let ballWidth = 10;
@@ -101,9 +103,17 @@ canvas.addEventListener("mousemove", e => {
 })
 
 
-// start the game
+// set frame rate
 let gameFPS = 60;
 
+// initialize the game with a start btn and then ballreset
+startGameBtn.addEventListener('click', () => {
+    ballReset();
+    backgroundMusic.play();
+    startGameOverlay.classList.add('hidden');
+});
+
+// run draw and move according to set FPS
 setInterval(() => {
     draw(); 
     move();
@@ -223,6 +233,7 @@ function displayCountDown(num, ms) {
 }
 
 async function ballReset() {
+    ballResetRunning = true;
     gameState = "paused";
     await displayCountDown("3", 1000);
     await displayCountDown("2", 1000);
@@ -232,11 +243,8 @@ async function ballReset() {
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
     gameState = "running";
+    ballResetRunning = false;
 }
-// initialize the game with a start btn and then ballreset
-
-/************* ADD A START BUTTON HERE*********/
-// ballReset();
 
 async function gameReset() {
     currentScoreLeft = 0;
@@ -289,7 +297,7 @@ async function gamePause(evt) {
         await unpauseClicked(pauseBtn, 'click');
         displayWinnerDiv.classList.add("hidden");
         pauseBtn.textContent = "Pause [P]";
-    };
+    } ;
 }
 
 function unpauseClicked(item, event) {
