@@ -11,7 +11,7 @@ let ctx = canvas.getContext('2d');
 
 // init sound variables
 const ballHit = document.getElementById('ballHit');
-ballHit.volume = 0.2;
+ballHit.volume = 1;
 const countdownAudio = document.getElementById('countdownAudio');
 countdownAudio.volume = 0.2;
 const backgroundMusic = document.getElementById('backgroundMusic');
