@@ -10,10 +10,10 @@ const startGameOverlay = document.getElementById('start-game-overlay');
 let ctx = canvas.getContext('2d');
 
 // init sound variables
-const ballHit = document.getElementById('ballHit');
-ballHit.volume = 1;
-const countdownAudio = document.getElementById('countdownAudio');
-countdownAudio.volume = 0.2;
+let ballHit = new Audio;
+ballHit.src = '/sounds/plop.mp3'
+console.log("ballhit src is: " + ballHit.src);
+ballHit.volume = 0.1;
 const backgroundMusic = document.getElementById('backgroundMusic');
 backgroundMusic.volume = 0.2;
 
