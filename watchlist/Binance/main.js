@@ -39,7 +39,9 @@ async function getCurrentPrice(symbol1, symbol2) {
     let currentPriceURL = `https://api.binance.com/api/v3/avgPrice?symbol=${symbol1}${symbol2}`;
     let response = await fetch(currentPriceURL);
     let data = await response.json();
-    return parseFloat(data.price).toFixed(2);
+    let price = parseFloat(data.price).toFixed(2);
+    console.log(price);
+    return price;
 }
 
 async function getDailyData(symbol1, symbol2) {
