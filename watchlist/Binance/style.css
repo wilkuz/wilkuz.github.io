@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700;800;900&family=Nova+Square&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-bg-color: rgb(32, 31, 31);
+    --daily-change-red: rgb(255, 47, 47);
+    --daily-change-green: rgb(3, 148, 3);
+}
+
+body {
+    font-family: "Inconsolata", sans-serif;
+    color: white;
+    background-color: var(--main-bg-color);
+}
+
+.main-list-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.main-list-table {
+    width: 100%;
+}
+
+.main-table-body > tr {
+    text-align: center;
+}
+
+.main-table-body tr td {
+    padding: .2em 0;
+}
+
+.green {
+    color: var(--daily-change-green);
+    text-shadow: 0 0 2px green;
+}
+
+.red {
+    color: var(--daily-change-red);
+    text-shadow: 0 0 2px red;
+}

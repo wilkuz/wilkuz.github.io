@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Attribution for APIs used:
+        Coingecko: https://www.coingecko.com/en/api/documentation?
+        Binance: https://binance-docs.github.io/apidocs
+            -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title></title>
@@ -10,16 +14,38 @@
         <script src="main.js" defer></script>
     </head>
     <body onload="fetchUserList();">
-        <form id="symbolForm">
+        <div id="addSymbolForm">
             <label for="symbol">Symbol</label>
-            <input type="text" name="symbol1" id="inputSymbol1" placeholder="ex. BTC" value="BTC">
-            <input type="text" name="symbol2" id="inputSymbol2" placeholder="ex. USDT" value="USDT">
-            <input type="submit" value="Add to list">
-        </form>
-        <div class="test-display" id="displayResponse">
-            <ul class="main-list" id="mainList">
-
-            </ul>
+            <input type="text" name="symbol1" id="inputSymbol1" placeholder="ex. BTC" required>
+            <select name="vs-symbol" id="vs-symbol-select">
+                <option value="USDT" selected>USDT</option>
+                <option value="BTC">BTC</option>
+            </select>
+            <button class="submit-new-symbol" id="submitNewSymbol">Add to list</button>
+        </div>
+        <div class="list-filter-wrapper">
+            <div class="list-filter-container">
+                <input class="list-filter-input" id="list-search-input" type="text">
+            </div>
+        </div>
+        <div class="main-list-container" id="displayResponse">
+            <table class="main-list-table" id="mainListTable">
+                <thead class="main-list-table-header">
+                    <tr class="main-list-table-header-row">
+                        <th>Symbol</th>
+                        <th>Price</th>
+                        <th>24hr change</th>
+                        <th>24hr Volume</th>
+                        <th>1Mo.chg</th>
+                        <th>3Mo.chg</th>
+                        <th>6Mo.chg</th>
+                        <th>12Mo.chg</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="main-table-body" id="mainListTableBody">
+                </tbody>
+            </table>
         </div>
     </body>
 </html>
