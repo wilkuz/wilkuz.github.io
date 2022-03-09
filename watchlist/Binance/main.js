@@ -110,7 +110,7 @@ async function fetchUserList() {
         let historicalData = await getHistoricalData(symbol1, symbol2);
         let dailyChange = parseFloat(dailyData.priceChangePercent).toFixed(2);
         let volume = parseInt(dailyData.quoteVolume);
-        let monthlyChanges = calculateMonthlyChanges(historicalData, price);
+        let monthlyChanges = calculateMonthlyChanges(historicalData, price); // Returns array with 1mo, 3mo, 6mo and 12mo performance in decimal
         let status = symbols[i].status;
         let ID = Date.now();
         IDList.push(ID);
@@ -118,13 +118,13 @@ async function fetchUserList() {
         //create row and populate with data 
         let row = `<tr>
                     <td class="table-data symbol">${symbol1}/${symbol2}</td>
-                    <td class="table-data price" id="price-${ID}">...Loading</td>
+                    <td class="table-data price" id="price-${ID}">${price}</td>
                     <td class="table-data dailyPercentChange ${dailyChange > 0 ? "green":"red"}" id="dailyChange-${ID}">${dailyChange}%</td>
-                    <td class="table-data dailyVolume">${abbreviateNumber(volume)} ${symbol2}</td>
-                    <td class="table-data dailyPercentChange ${monthlyChanges[0] > 0 ? "green":"red"}">${(monthlyChanges[0] * 100).toFixed(2)}%</td>
-                    <td class="table-data dailyPercentChange ${monthlyChanges[1] > 0 ? "green":"red"}">${(monthlyChanges[1] * 100).toFixed(2)}%</td>
-                    <td class="table-data dailyPercentChange ${monthlyChanges[2] > 0 ? "green":"red"}">${(monthlyChanges[2] * 100).toFixed(2)}%</td>
-                    <td class="table-data dailyPercentChange ${monthlyChanges[3] > 0 ? "green":"red"}">${(monthlyChanges[3] * 100).toFixed(2)}%</td>
+                    <td class="table-data dailyVolume" id="dailyVolume-${ID}">${abbreviateNumber(volume)} ${symbol2}</td>
+                    <td class="table-data montlyPercentChange ${monthlyChanges[0] > 0 ? "green":"red"}">${(monthlyChanges[0] * 100).toFixed(2)}%</td>
+                    <td class="table-data threeMonthPercentChange ${monthlyChanges[1] > 0 ? "green":"red"}">${(monthlyChanges[1] * 100).toFixed(2)}%</td>
+                    <td class="table-data sixMonthPercentChange ${monthlyChanges[2] > 0 ? "green":"red"}">${(monthlyChanges[2] * 100).toFixed(2)}%</td>
+                    <td class="table-data yearlyPercentChange ${monthlyChanges[3] > 0 ? "green":"red"}">${(monthlyChanges[3] * 100).toFixed(2)}%</td>
                     <td class="table-data delete-btn" table-data-delete-btn><button class="delete-table-item" id="${ID}">X</button></td>
                   </tr>`
         mainTableBody.innerHTML += row;
@@ -132,16 +132,32 @@ async function fetchUserList() {
 
     console.log(JSON.stringify(symbols));
     console.log(symbols.length);
-    // add websocket to price col
+
+    // add websocket to price columns & daily change to display live data for each symbol in list
     for (let i = 0; i < symbols.length; i++) {
         let symbol1 = symbols[i].symbol1;
         let symbol2 = symbols[i].symbol2;
-        let pricews = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol1.toLowerCase()}${symbol2.toLowerCase()}@trade`);
-        pricews.onmessage = (e) => {
+
+        // add websocket for price, 24hr change and volume
+        let priceWS = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol1.toLowerCase()}${symbol2.toLowerCase()}@ticker`);
+        priceWS.onmessage = (e) => {
+            // load data to variables
             let tickerObj = JSON.parse(e.data);
-            let price = tickerObj.p;
+            let price = tickerObj.c;
+            let percentChange = parseFloat(tickerObj.P).toFixed(2);
+            let volume = parseInt(tickerObj.q);
+            volume = abbreviateNumber(volume);
+
+            // add stream to elements
             let priceElem = document.getElementById(`price-${IDList[i]}`);
             priceElem.innerText = parseFloat(price).toFixed(2);
+
+            let percentChangeElem = document.getElementById(`dailyChange-${IDList[i]}`);
+            percentChangeElem.innerText = percentChange + "%";
+
+            let volumeElem = document.getElementById(`dailyVolume-${IDList[i]}`);
+            volumeElem.innerText = `${volume} ${symbol2}`;
+            console.log(volume);
         }
     };
 

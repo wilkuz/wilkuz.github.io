@@ -19,7 +19,7 @@ body {
 }
 
 .main-list-container {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
 }
 
@@ -43,4 +43,8 @@ body {
 .red {
     color: var(--daily-change-red);
     text-shadow: 0 0 2px red;
+}
+
+.delete-table-item {
+    padding: 0 .5em;
 }
