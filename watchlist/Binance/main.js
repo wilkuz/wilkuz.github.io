@@ -5,7 +5,6 @@ const mainTableBody = document.querySelector('#mainListTableBody');
 const symbolInput1 = document.getElementById('inputSymbol1');
 const symbolInput2 = document.getElementById('vs-symbol-select');
 
-
 formSubmit.addEventListener('click', async (e) => {
     let input1 = symbolInput1.value;
     let input2 = symbolInput2.value;
@@ -13,9 +12,11 @@ formSubmit.addEventListener('click', async (e) => {
 
     // symbols must be letters only
     if (isOnlyLetters(input1) && isOnlyLetters(input2)) {
+        let uniqID = chance.guid();
         symbolPair = {
             symbol1: input1.toUpperCase(),
             symbol2: input2.toUpperCase(),
+            ID: uniqID,
             status: "Open"
         };
     } else {
@@ -25,11 +26,9 @@ formSubmit.addEventListener('click', async (e) => {
     
     // make a test request to see if symbol exists or not, if it does exist, ass to local storage, otherwise alert user
     let testURL = `https://api.binance.com/api/v3/ticker/24hr?symbol=${symbolPair.symbol1}${symbolPair.symbol2}`;
-    console.log(testURL);
     let testping = await fetch(testURL).then((response) => {
         if (response.status >= 400 && response.status < 600) {
             testResult = "Server error";
-            console.log(testResult);
             return testResult;
         } else {
             testResult = "passed";
@@ -65,7 +64,6 @@ async function getCurrentPrice(symbol1, symbol2) {
     let data = await response.json();
     let price = parseFloat(data.price).toFixed(2);
     const duration = Date.now() - start
-    console.log("execution time of getCurrentPrice: " + duration);
     return price;
 }
 
@@ -77,7 +75,6 @@ async function getDailyData(symbol1, symbol2) {
     let response = await fetch(dailyDataURL);
     let data = await response.json();
     const duration = Date.now() - start
-    console.log("execution time of getDailyData: " + duration);
     return data;
 };
 
@@ -89,17 +86,30 @@ async function getHistoricalData(symbol1, symbol2) {
     let response = await fetch(historicalDataURL);
     let data = await response.json();
     const duration = Date.now() - start
-    console.log("execution time of getHistoricalData: " + duration);
     return data;
 }
 
 
 async function fetchUserList() {
     let symbols = JSON.parse(localStorage.getItem('watchListSymbols'));
-    if (symbols === null) {
-        return "symbol list is empty"
-    }
-    let IDList = [];
+    if (symbols === null || symbols.length == 0) {
+        symbols = [];
+        let defaultSymbols = ["BTC", "ETH", "LUNA", "SOL", "AVAX", "DOT", "DOGE"];
+        for (let i = 0; i < defaultSymbols.length; i++) {
+            let ID = chance.guid();
+            console.log(defaultSymbols[i]);
+            let newSymbol = {
+                symbol1: defaultSymbols[i],
+                symbol2: "USDT",
+                ID: ID
+                };
+            symbols.push(newSymbol);
+            };
+        
+        console.log(symbols);
+        localStorage.setItem('watchListSymbols', JSON.stringify(symbols));
+    };
+
     mainTableBody.innerHTML = "";
     // define values to be used in table
     for (let i = 0; i < symbols.length; i++) {
@@ -111,9 +121,7 @@ async function fetchUserList() {
         let dailyChange = parseFloat(dailyData.priceChangePercent).toFixed(2);
         let volume = parseInt(dailyData.quoteVolume);
         let monthlyChanges = calculateMonthlyChanges(historicalData, price); // Returns array with 1mo, 3mo, 6mo and 12mo performance in decimal
-        let status = symbols[i].status;
-        let ID = Date.now();
-        IDList.push(ID);
+        let ID = symbols[i].ID
 
         //create row and populate with data 
         let row = `<tr>
@@ -125,22 +133,22 @@ async function fetchUserList() {
                     <td class="table-data threeMonthPercentChange ${monthlyChanges[1] > 0 ? "green":"red"}">${(monthlyChanges[1] * 100).toFixed(2)}%</td>
                     <td class="table-data sixMonthPercentChange ${monthlyChanges[2] > 0 ? "green":"red"}">${(monthlyChanges[2] * 100).toFixed(2)}%</td>
                     <td class="table-data yearlyPercentChange ${monthlyChanges[3] > 0 ? "green":"red"}">${(monthlyChanges[3] * 100).toFixed(2)}%</td>
+                    <td class="table-data chart-btn" table-data-chart-btn><button class="chart-table-btn chart-closed" id="chart-${ID}"><i class="fa-solid fa-chart-line"></i></button></td>
                     <td class="table-data delete-btn" table-data-delete-btn><button class="delete-table-item" id="${ID}">X</button></td>
                   </tr>`
         mainTableBody.innerHTML += row;
     }
 
-    console.log(JSON.stringify(symbols));
-    console.log(symbols.length);
-
     // add websocket to price columns & daily change to display live data for each symbol in list
     for (let i = 0; i < symbols.length; i++) {
         let symbol1 = symbols[i].symbol1;
         let symbol2 = symbols[i].symbol2;
+        let ID = symbols[i].ID;
 
         // add websocket for price, 24hr change and volume
         let priceWS = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol1.toLowerCase()}${symbol2.toLowerCase()}@ticker`);
         priceWS.onmessage = (e) => {
+
             // load data to variables
             let tickerObj = JSON.parse(e.data);
             let price = tickerObj.c;
@@ -149,21 +157,25 @@ async function fetchUserList() {
             volume = abbreviateNumber(volume);
 
             // add stream to elements
-            let priceElem = document.getElementById(`price-${IDList[i]}`);
-            priceElem.innerText = parseFloat(price).toFixed(2);
+            let priceElem = document.getElementById(`price-${ID}`);
+            if (priceElem == null) {
+                // if symbol gets deleted then close the stream
+                priceWS.close();
+            } else {
+                priceElem.innerText = parseFloat(price).toFixed(2);
 
-            let percentChangeElem = document.getElementById(`dailyChange-${IDList[i]}`);
-            percentChangeElem.innerText = percentChange + "%";
+                let percentChangeElem = document.getElementById(`dailyChange-${ID}`);
+                percentChangeElem.innerText = percentChange + "%";
 
-            let volumeElem = document.getElementById(`dailyVolume-${IDList[i]}`);
-            volumeElem.innerText = `${volume} ${symbol2}`;
-            console.log(volume);
+                let volumeElem = document.getElementById(`dailyVolume-${ID}`);
+                volumeElem.innerText = `${volume} ${symbol2}`;
+            }
         }
     };
-
     // add event listeners to delete buttons - this can't be done in previous for loop because of innerHTML used
-    for (let i = 0; i < IDList.length; i++) {
-        let deleteBtn = document.getElementById(`${IDList[i]}`);
+    for (let i = 0; i < symbols.length; i++) {
+        let ID = symbols[i].ID;
+        let deleteBtn = document.getElementById(`${ID}`);
         deleteBtn.addEventListener('click', (e) => {
             symbols.splice(i, 1);
             let newSymbols = JSON.stringify(symbols);
@@ -171,12 +183,44 @@ async function fetchUserList() {
             symbols = JSON.parse(localStorage.getItem('watchListSymbols'));
             e.target.parentNode.parentNode.remove();
         });
-        
+
+        let chartBtn = document.getElementById(`chart-${ID}`);
+        chartBtn.addEventListener('click', (e) => {
+            if (chartBtn.classList.contains("chart-closed")) {
+                let rowForChart = `<tr class="tradingview-chart-row" id="tradingviewChart-row-${ID}"></tr>`
+                let btnRow = chartBtn.parentNode.parentNode;
+                btnRow.insertAdjacentHTML("afterend", rowForChart);
+
+                let cellforChart = document.createElement("td");
+                cellforChart.classList.add("tradingview-chart-container");
+                cellforChart.setAttribute("id", `tradingviewChart-container-${ID}`);
+                cellforChart.setAttribute("colspan", "100%");
+                let rowForChartNode = document.getElementById(`tradingviewChart-row-${ID}`);
+
+
+                rowForChartNode.appendChild(cellforChart);
+                cellforChart.innerHTML = `
+                <iframe id="tradingview_7704e" src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_7704e&amp;symbol=BINANCE%3A${symbols[i].symbol1}${symbols[i].symbol2}&amp;interval=D&amp;symboledit=1&amp;saveimage=0&amp;toolbarbg=f1f3f6&amp;studies=%5B%5D&amp;theme=dark&amp;style=1&amp;timezone=Etc%2FUTC&amp;studies_overrides=%7B%7D&amp;overrides=%7B%7D&amp;enabled_features=%5B%5D&amp;disabled_features=%5B%5D&amp;locale=en&amp;utm_source=www.tradingview.com&amp;utm_medium=widget_new&amp;utm_campaign=chart&amp;utm_term=BINANCE%3ABTCUSDT"
+                 style="width: 90%; height: 50vh; margin: 0 !important; padding: 0 !important;" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen=""></iframe>`
+                
+                
+            } else if (chartBtn.classList.contains("chart-open")) {
+                let rowForChart = document.getElementById(`tradingviewChart-row-${ID}`);
+                rowForChart.remove();
+            }
+
+            chartBtn.classList.toggle("chart-open");
+            chartBtn.classList.toggle("chart-closed");
+        })
     }
 };
 
 function isOnlyLetters(str) {
     return /^[a-zA-Z]+$/.test(str);
+}
+
+function removeNonNumerical(str) {
+    return parseFloat(str.replace(/\D/g,''));
 }
 
 function abbreviateNumber(number){
@@ -239,4 +283,57 @@ function calculateMonthlyChanges(data, latestPrice) {
     }
 
     return monthlyChanges;
+}
+
+
+function sortSymbolListByColumn(tableBody, column, asc = true) {
+    const directionModifier = asc ? 1 : -1;
+    const rows = Array.from(tableBody.querySelectorAll("tr"));
+    let sortedRows = [];
+    if (column == 0) {
+            sortedRows = rows.sort((a,b) => {
+            aColValue = (a.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
+            bColValue = (b.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
+    
+            console.log("acol: " + aColValue);
+            console.log("bcol: " + bColValue);
+            return aColValue > bColValue ? (1 * directionModifier) : (-1 * directionModifier);
+        })
+    } else if (column == 3) {
+            sortedRows = rows.sort((a,b) => {
+            aColValue = parseFloat(a.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
+            bColValue = parseFloat(b.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
+    
+            console.log("acol: " + aColValue);
+            console.log("bcol: " + bColValue);
+            return aColValue > bColValue ? (1 * directionModifier) : (-1 * directionModifier);
+        })
+    } else {
+            sortedRows = rows.sort((a,b) => {
+            aColValue = parseFloat(a.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
+            bColValue = parseFloat(b.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
+    
+            console.log("acol: " + aColValue);
+            console.log("bcol: " + bColValue);
+            return aColValue > bColValue ? (1 * directionModifier) : (-1 * directionModifier);
+        })
+    }
+
+    // update local storage
+    let sortedSymbols = [];
+    sortedRows.forEach((row, index) => {
+        let rowSymbolPair = row.cells[0].innerText;
+        let rowSymbolArray = rowSymbolPair.split("/");
+        let uniqID = chance.guid();
+        symbolPair = {
+            symbol1: rowSymbolArray[0],
+            symbol2: rowSymbolArray[1],
+            ID: uniqID,
+            status: "Open"
+        };
+        sortedSymbols.push(symbolPair);
+    })
+
+    localStorage.setItem('watchListSymbols', JSON.stringify(sortedSymbols));
+    fetchUserList();
 }

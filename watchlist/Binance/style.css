@@ -48,3 +48,22 @@ body {
 .delete-table-item {
     padding: 0 .5em;
 }
+
+.white {
+    color: white;
+    background-color: black;
+}
+
+.chart-btn {
+    width: 100px;
+}
+
+.chart-table-btn {
+    width:fit-content;
+    height: fit-content;
+    padding: .1em;
+}
+
+.tradingview-chart-container {
+    width: 80vw;
+}
