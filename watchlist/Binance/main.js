@@ -4,7 +4,10 @@ const mainTable = document.querySelector('#mainListTable');
 const mainTableBody = document.querySelector('#mainListTableBody');
 const symbolInput1 = document.getElementById('inputSymbol1');
 const symbolInput2 = document.getElementById('vs-symbol-select');
+const sortingBtns = document.querySelectorAll('.sorting-btn');
 
+
+/* -- EVENT LISTENER FOR ADDING NEW SYMBOL TO LIST */
 formSubmit.addEventListener('click', async (e) => {
     let input1 = symbolInput1.value;
     let input2 = symbolInput2.value;
@@ -55,6 +58,7 @@ formSubmit.addEventListener('click', async (e) => {
     console.log("testping result: " + testping);
 });
 
+/* GET CURRENT AVERAGE PRICE FOR A SYMBOL PAIR */
 async function getCurrentPrice(symbol1, symbol2) {
     const start = Date.now();
     symbol2 = symbol2.toUpperCase();
@@ -67,6 +71,7 @@ async function getCurrentPrice(symbol1, symbol2) {
     return price;
 }
 
+/* GET 24hr DATA FOR A SYMBOL PAIR */
 async function getDailyData(symbol1, symbol2) {
     const start = Date.now();
     symbol2 = symbol2.toUpperCase();
@@ -78,6 +83,7 @@ async function getDailyData(symbol1, symbol2) {
     return data;
 };
 
+/* GET HISTORICAL DATA FOR A SYMBOL PAIR */
 async function getHistoricalData(symbol1, symbol2) {
     const start = Date.now();
     symbol1.toUpperCase();
@@ -90,7 +96,10 @@ async function getHistoricalData(symbol1, symbol2) {
 }
 
 
+/* FETCH USERS WATCHLIST FROM LOCAL STORAGE AND ADD THEM TO MAIN LIST ALONG WITH EVENT LISTENERS */
 async function fetchUserList() {
+
+    // if user currently has no watchlist, give a default watchlist and save to local storage
     let symbols = JSON.parse(localStorage.getItem('watchListSymbols'));
     if (symbols === null || symbols.length == 0) {
         symbols = [];
@@ -110,7 +119,9 @@ async function fetchUserList() {
         localStorage.setItem('watchListSymbols', JSON.stringify(symbols));
     };
 
+    // clear list
     mainTableBody.innerHTML = "";
+
     // define values to be used in table
     for (let i = 0; i < symbols.length; i++) {
         let symbol1 = symbols[i].symbol1;
@@ -172,7 +183,7 @@ async function fetchUserList() {
             }
         }
     };
-    // add event listeners to delete buttons - this can't be done in previous for loop because of innerHTML used
+    // add event listeners to delete and chart buttons - this can't be done in previous for loop because of innerHTML used
     for (let i = 0; i < symbols.length; i++) {
         let ID = symbols[i].ID;
         let deleteBtn = document.getElementById(`${ID}`);
@@ -213,7 +224,20 @@ async function fetchUserList() {
             chartBtn.classList.toggle("chart-closed");
         })
     }
-};
+
+    // add event listeners for sorting
+    sortingBtns.forEach((button) => {
+        button.addEventListener('click', () => {
+            if (button.getAttribute('sorting') == "none" || button.getAttribute('sorting') == "ascending") {
+                sortSymbolListByColumn(mainTableBody, parseInt(button.id), false);
+                button.setAttribute('sorting', "descending");
+            } else if (button.getAttribute('sorting' == "descending")) {
+                sortSymbolListByColumn(mainTableBody, parseInt(button.id), true);
+                button.setAttribute('sorting', "ascending");
+            }
+        })
+    });
+}
 
 function isOnlyLetters(str) {
     return /^[a-zA-Z]+$/.test(str);
@@ -223,6 +247,7 @@ function removeNonNumerical(str) {
     return parseFloat(str.replace(/\D/g,''));
 }
 
+// used to abbreviate volume numbers
 function abbreviateNumber(number){
     let SI_SYMBOL = ["", "k", "M", "B", "T", "P", "E"];
 
@@ -282,10 +307,12 @@ function calculateMonthlyChanges(data, latestPrice) {
         monthlyChanges.push("N/A");
     }
 
+    // return values in an array
     return monthlyChanges;
 }
 
 
+/* SORTS COLUMNS DEPENGING ON WHAT COLUMN IS CHOSEN FOR SORTING */
 function sortSymbolListByColumn(tableBody, column, asc = true) {
     const directionModifier = asc ? 1 : -1;
     const rows = Array.from(tableBody.querySelectorAll("tr"));
@@ -335,5 +362,7 @@ function sortSymbolListByColumn(tableBody, column, asc = true) {
     })
 
     localStorage.setItem('watchListSymbols', JSON.stringify(sortedSymbols));
+
+    // remake list with new sorted array of symbols
     fetchUserList();
 }

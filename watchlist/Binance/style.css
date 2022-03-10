@@ -27,6 +27,13 @@ body {
     width: 100%;
 }
 
+.sorting-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    padding-left: .8em
+}
+
 .main-table-body > tr {
     text-align: center;
 }
