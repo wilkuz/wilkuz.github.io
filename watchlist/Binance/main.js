@@ -42,7 +42,7 @@ formSubmit.addEventListener('click', async (e) => {
         return
     };
     
-    // make a test request to see if symbol exists or not, if it does exist, ass to local storage, otherwise alert user
+    // make a test request to see if symbol exists or not, if it does exist, add to local storage, otherwise alert user
     let testURL = `https://api.binance.com/api/v3/ticker/24hr?symbol=${symbolPair.symbol1}${symbolPair.symbol2}`;
     let testping = await fetch(testURL).then((response) => {
         if (response.status >= 400 && response.status < 600) {
@@ -111,12 +111,12 @@ async function getHistoricalData(symbol1, symbol2) {
 }
 
 
-/* FETCH USERS WATCHLIST FROM LOCAL STORAGE AND ADD THEM TO MAIN LIST ALONG WITH EVENT LISTENERS */
+/* FETCH USERS WATCHLIST FROM LOCAL STORAGE AND ADD ITEMS TO MAIN LIST ALONG WITH EVENT LISTENERS */
 async function fetchUserList(watchlist = "watchListSymbols") {
 
-    // if user currently has no watchlist, give a default watchlist and save to local storage
     display.setAttribute("id", watchlist)
     let symbols = JSON.parse(localStorage.getItem(watchlist));
+    // if user currently has no watchlist, give a default watchlist and save to local storage
     if (symbols === null || symbols.length == 0) {
         symbols = [];
         let defaultSymbols = ["BTC", "ETH", "LUNA", "SOL", "AVAX", "DOT", "DOGE"];
@@ -133,7 +133,7 @@ async function fetchUserList(watchlist = "watchListSymbols") {
         localStorage.setItem(watchlist, JSON.stringify(symbols));
     };
 
-    // clear list
+    // clear list table
     mainTableBody.innerHTML = "";
 
     // define values to be used in table
@@ -183,7 +183,7 @@ async function fetchUserList(watchlist = "watchListSymbols") {
 
             // add stream to elements
             let priceElem = document.getElementById(`price-${ID}`);
-            if (priceElem == null) {
+            if (priceElem == null || priceElem == "undefined") {
                 // if symbol gets deleted then close the stream
                 priceWS.close();
             } else {
@@ -197,7 +197,8 @@ async function fetchUserList(watchlist = "watchListSymbols") {
             }
         }
     };
-    // add event listeners to delete and chart buttons - this can't be done in previous for loop because of innerHTML used
+
+    // add event listeners to delete and chart buttons - this can't be done in previous for loop because of innerHTML+= used
     for (let i = 0; i < symbols.length; i++) {
         let ID = symbols[i].ID;
         let deleteBtn = document.getElementById(`${ID}`);
@@ -205,12 +206,12 @@ async function fetchUserList(watchlist = "watchListSymbols") {
             if (symbols.length <= 1) {
                 localStorage.removeItem(watchlist);
                 e.target.parentNode.parentNode.remove();
-                return
                 mainTableBody.childNodes.forEach((childNode) => {
                     if (childNode.hasAttribute("id")) {
                         childNode.getAttribute("id") == `tradingviewChart-row-${ID}` ? childNode.remove() : null;
                     }
                 })
+                return
             }
             let newSymbols = removeItemByID(symbols, ID)
             localStorage.setItem(watchlist, newSymbols);
@@ -225,6 +226,7 @@ async function fetchUserList(watchlist = "watchListSymbols") {
             })
         });
 
+        // configure chart button to open tradingview gadget
         let chartBtn = document.getElementById(`chart-${ID}`);
         chartBtn.addEventListener('click', (e) => {
             if (chartBtn.classList.contains("chart-closed")) {
@@ -255,11 +257,10 @@ async function fetchUserList(watchlist = "watchListSymbols") {
         })
     }
 
-    // add event listeners for sorting
+    // add event listeners for sorting btns, {once:true} is fine as sortSymbolListByColum() calls fetchUserList(), thus adding event listeners again.
     let sortingBtns = document.querySelectorAll('.sorting-btn');
     sortingBtns.forEach((button) => {
         button.addEventListener('click', () => {
-            console.log("clicked");
             if (button.getAttribute('sorting') == "none" || button.getAttribute('sorting') == "ascending") {
                 button.setAttribute('sorting', "descending");
                 sortSymbolListByColumn(mainTableBody, parseInt(button.id), false, display.id, sortingBtns);
@@ -357,6 +358,7 @@ function sortSymbolListByColumn(tableBody, column, asc = true, watchlist, button
             return aColValue > bColValue ? (1 * directionModifier) : (-1 * directionModifier);
         })
     } else if (column == 3) {
+        /* NEED TO ADD FUNCTION FOR REVERSE ABBREVIATION TO CALCULATE VOLUME */
             sortedRows = rows.sort((a,b) => {
             aColValue = parseFloat(a.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
             bColValue = parseFloat(b.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
