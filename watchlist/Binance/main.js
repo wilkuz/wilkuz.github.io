@@ -202,8 +202,17 @@ async function fetchUserList(watchlist = "watchListSymbols") {
         let ID = symbols[i].ID;
         let deleteBtn = document.getElementById(`${ID}`);
         deleteBtn.addEventListener('click', (e) => {
-            symbols.splice(i, 1);
-            let newSymbols = JSON.stringify(symbols);
+            if (symbols.length <= 1) {
+                localStorage.removeItem(watchlist);
+                e.target.parentNode.parentNode.remove();
+                return
+                mainTableBody.childNodes.forEach((childNode) => {
+                    if (childNode.hasAttribute("id")) {
+                        childNode.getAttribute("id") == `tradingviewChart-row-${ID}` ? childNode.remove() : null;
+                    }
+                })
+            }
+            let newSymbols = removeItemByID(symbols, ID)
             localStorage.setItem(watchlist, newSymbols);
             symbols = JSON.parse(localStorage.getItem(watchlist));
             e.target.parentNode.parentNode.remove();
@@ -388,4 +397,11 @@ function sortSymbolListByColumn(tableBody, column, asc = true, watchlist, button
     })
     // remake list with new sorted array of symbols
     fetchUserList();
+}
+
+function removeItemByID(array, ID) {
+    let filteredArr = array.filter((item)=> {
+        return item.ID != ID
+    })
+    return JSON.stringify(filteredArr);
 }
