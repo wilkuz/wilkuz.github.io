@@ -46,6 +46,7 @@ body {
 
 .symbol-form-container > input {
     border-bottom: 1px solid white;
+    padding: .2em;
 }
 
 .symbol-form-container > button {
