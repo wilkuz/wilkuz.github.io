@@ -193,6 +193,13 @@ async function fetchUserList() {
             localStorage.setItem('watchListSymbols', newSymbols);
             symbols = JSON.parse(localStorage.getItem('watchListSymbols'));
             e.target.parentNode.parentNode.remove();
+            
+            // check if chart is currently open, if it is - delete that as well
+            mainTableBody.childNodes.forEach((childNode) => {
+                if (childNode.hasAttribute("id")) {
+                    childNode.getAttribute("id") == `tradingviewChart-row-${ID}` ? childNode.remove() : null;
+                }
+            })
         });
 
         let chartBtn = document.getElementById(`chart-${ID}`);
