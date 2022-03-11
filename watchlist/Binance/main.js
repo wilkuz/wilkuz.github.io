@@ -5,6 +5,22 @@ const mainTableBody = document.querySelector('#mainListTableBody');
 const symbolInput1 = document.getElementById('inputSymbol1');
 const symbolInput2 = document.getElementById('vs-symbol-select');
 const sortingBtns = document.querySelectorAll('.sorting-btn');
+const reloadBtn = document.getElementById('reloadBtn');
+
+
+/* --- EVENT LISTENER FOR RELOAD BUTTON --- */
+reloadBtn.addEventListener('click', async () => {
+    if (reloadBtn.style.animation == "") {
+        reloadBtn.style.animation = "spin 500ms"
+        await fetchUserList();
+        const animationDelay = delay => new Promise(resolve => setTimeout(() => {
+            reloadBtn.style.animation = "";
+            resolve;
+        }, delay))
+        await animationDelay(500);
+        
+    }
+})
 
 
 /* -- EVENT LISTENER FOR ADDING NEW SYMBOL TO LIST */
@@ -35,15 +51,15 @@ formSubmit.addEventListener('click', async (e) => {
             return testResult;
         } else {
             testResult = "passed";
-            let currentSymbols = localStorage.getItem('watchListSymbols');
+            let currentSymbols = localStorage.getItem(display.id);
             if (currentSymbols === null) {
                 let symbols = [];
                 symbols.push(symbolPair);
-                localStorage.setItem('watchListSymbols', JSON.stringify(symbols));
+                localStorage.setItem(display.id, JSON.stringify(symbols));
             } else {
                 let symbols = JSON.parse(currentSymbols);
                 symbols.push(symbolPair);
-                localStorage.setItem('watchListSymbols', JSON.stringify(symbols));
+                localStorage.setItem(display.id, JSON.stringify(symbols));
             }
             location.reload();
             return testResult;
@@ -97,10 +113,11 @@ async function getHistoricalData(symbol1, symbol2) {
 
 
 /* FETCH USERS WATCHLIST FROM LOCAL STORAGE AND ADD THEM TO MAIN LIST ALONG WITH EVENT LISTENERS */
-async function fetchUserList() {
+async function fetchUserList(watchlist = "watchListSymbols") {
 
     // if user currently has no watchlist, give a default watchlist and save to local storage
-    let symbols = JSON.parse(localStorage.getItem('watchListSymbols'));
+    display.setAttribute("id", watchlist)
+    let symbols = JSON.parse(localStorage.getItem(watchlist));
     if (symbols === null || symbols.length == 0) {
         symbols = [];
         let defaultSymbols = ["BTC", "ETH", "LUNA", "SOL", "AVAX", "DOT", "DOGE"];
@@ -116,7 +133,7 @@ async function fetchUserList() {
             };
         
         console.log(symbols);
-        localStorage.setItem('watchListSymbols', JSON.stringify(symbols));
+        localStorage.setItem(watchlist, JSON.stringify(symbols));
     };
 
     // clear list
@@ -144,7 +161,7 @@ async function fetchUserList() {
                     <td class="table-data threeMonthPercentChange ${monthlyChanges[1] > 0 ? "green":"red"}">${(monthlyChanges[1] * 100).toFixed(2)}%</td>
                     <td class="table-data sixMonthPercentChange ${monthlyChanges[2] > 0 ? "green":"red"}">${(monthlyChanges[2] * 100).toFixed(2)}%</td>
                     <td class="table-data yearlyPercentChange ${monthlyChanges[3] > 0 ? "green":"red"}">${(monthlyChanges[3] * 100).toFixed(2)}%</td>
-                    <td class="table-data chart-btn" table-data-chart-btn><button class="chart-table-btn chart-closed" id="chart-${ID}"><i class="fa-solid fa-chart-line"></i></button></td>
+                    <td class="table-data chart-btn" table-data-chart-btn><button class="chart-table-btn chart-closed" id="chart-${ID}"><i class="fa-solid fa-chart-line chart-btn"></i></button></td>
                     <td class="table-data delete-btn" table-data-delete-btn><button class="delete-table-item" id="${ID}">X</button></td>
                   </tr>`
         mainTableBody.innerHTML += row;
@@ -190,10 +207,10 @@ async function fetchUserList() {
         deleteBtn.addEventListener('click', (e) => {
             symbols.splice(i, 1);
             let newSymbols = JSON.stringify(symbols);
-            localStorage.setItem('watchListSymbols', newSymbols);
-            symbols = JSON.parse(localStorage.getItem('watchListSymbols'));
+            localStorage.setItem(watchlist, newSymbols);
+            symbols = JSON.parse(localStorage.getItem(watchlist));
             e.target.parentNode.parentNode.remove();
-            
+
             // check if chart is currently open, if it is - delete that as well
             mainTableBody.childNodes.forEach((childNode) => {
                 if (childNode.hasAttribute("id")) {
@@ -236,10 +253,10 @@ async function fetchUserList() {
     sortingBtns.forEach((button) => {
         button.addEventListener('click', () => {
             if (button.getAttribute('sorting') == "none" || button.getAttribute('sorting') == "ascending") {
-                sortSymbolListByColumn(mainTableBody, parseInt(button.id), false);
+                sortSymbolListByColumn(mainTableBody, parseInt(button.id), false, display.id);
                 button.setAttribute('sorting', "descending");
             } else if (button.getAttribute('sorting' == "descending")) {
-                sortSymbolListByColumn(mainTableBody, parseInt(button.id), true);
+                sortSymbolListByColumn(mainTableBody, parseInt(button.id), true, display.id);
                 button.setAttribute('sorting', "ascending");
             }
         })
@@ -320,7 +337,7 @@ function calculateMonthlyChanges(data, latestPrice) {
 
 
 /* SORTS COLUMNS DEPENGING ON WHAT COLUMN IS CHOSEN FOR SORTING */
-function sortSymbolListByColumn(tableBody, column, asc = true) {
+function sortSymbolListByColumn(tableBody, column, asc = true, watchlist) {
     const directionModifier = asc ? 1 : -1;
     const rows = Array.from(tableBody.querySelectorAll("tr"));
     let sortedRows = [];
@@ -368,7 +385,7 @@ function sortSymbolListByColumn(tableBody, column, asc = true) {
         sortedSymbols.push(symbolPair);
     })
 
-    localStorage.setItem('watchListSymbols', JSON.stringify(sortedSymbols));
+    localStorage.setItem(watchlist, JSON.stringify(sortedSymbols));
 
     // remake list with new sorted array of symbols
     fetchUserList();
