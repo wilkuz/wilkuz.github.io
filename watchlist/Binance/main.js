@@ -4,7 +4,6 @@ const mainTable = document.querySelector('#mainListTable');
 const mainTableBody = document.querySelector('#mainListTableBody');
 const symbolInput1 = document.getElementById('inputSymbol1');
 const symbolInput2 = document.getElementById('vs-symbol-select');
-const sortingBtns = document.querySelectorAll('.sorting-btn');
 const reloadBtn = document.getElementById('reloadBtn');
 
 
@@ -123,7 +122,6 @@ async function fetchUserList(watchlist = "watchListSymbols") {
         let defaultSymbols = ["BTC", "ETH", "LUNA", "SOL", "AVAX", "DOT", "DOGE"];
         for (let i = 0; i < defaultSymbols.length; i++) {
             let ID = chance.guid();
-            console.log(defaultSymbols[i]);
             let newSymbol = {
                 symbol1: defaultSymbols[i],
                 symbol2: "USDT",
@@ -132,7 +130,6 @@ async function fetchUserList(watchlist = "watchListSymbols") {
             symbols.push(newSymbol);
             };
         
-        console.log(symbols);
         localStorage.setItem(watchlist, JSON.stringify(symbols));
     };
 
@@ -250,16 +247,18 @@ async function fetchUserList(watchlist = "watchListSymbols") {
     }
 
     // add event listeners for sorting
+    let sortingBtns = document.querySelectorAll('.sorting-btn');
     sortingBtns.forEach((button) => {
         button.addEventListener('click', () => {
+            console.log("clicked");
             if (button.getAttribute('sorting') == "none" || button.getAttribute('sorting') == "ascending") {
-                sortSymbolListByColumn(mainTableBody, parseInt(button.id), false, display.id);
                 button.setAttribute('sorting', "descending");
-            } else if (button.getAttribute('sorting' == "descending")) {
-                sortSymbolListByColumn(mainTableBody, parseInt(button.id), true, display.id);
+                sortSymbolListByColumn(mainTableBody, parseInt(button.id), false, display.id, sortingBtns);
+            } else if (button.getAttribute('sorting') == "descending") {
                 button.setAttribute('sorting', "ascending");
+                sortSymbolListByColumn(mainTableBody, parseInt(button.id), true, display.id, sortingBtns);
             }
-        })
+        }, {once :   true});
     });
 }
 
@@ -337,7 +336,7 @@ function calculateMonthlyChanges(data, latestPrice) {
 
 
 /* SORTS COLUMNS DEPENGING ON WHAT COLUMN IS CHOSEN FOR SORTING */
-function sortSymbolListByColumn(tableBody, column, asc = true, watchlist) {
+function sortSymbolListByColumn(tableBody, column, asc = true, watchlist, buttons) {
     const directionModifier = asc ? 1 : -1;
     const rows = Array.from(tableBody.querySelectorAll("tr"));
     let sortedRows = [];
@@ -345,9 +344,7 @@ function sortSymbolListByColumn(tableBody, column, asc = true, watchlist) {
             sortedRows = rows.sort((a,b) => {
             aColValue = (a.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
             bColValue = (b.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
-    
-            console.log("acol: " + aColValue);
-            console.log("bcol: " + bColValue);
+
             return aColValue > bColValue ? (1 * directionModifier) : (-1 * directionModifier);
         })
     } else if (column == 3) {
@@ -355,8 +352,6 @@ function sortSymbolListByColumn(tableBody, column, asc = true, watchlist) {
             aColValue = parseFloat(a.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
             bColValue = parseFloat(b.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
     
-            console.log("acol: " + aColValue);
-            console.log("bcol: " + bColValue);
             return aColValue > bColValue ? (1 * directionModifier) : (-1 * directionModifier);
         })
     } else {
@@ -364,8 +359,6 @@ function sortSymbolListByColumn(tableBody, column, asc = true, watchlist) {
             aColValue = parseFloat(a.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
             bColValue = parseFloat(b.querySelector(`td:nth-child(${column + 1})`).textContent.trim());
     
-            console.log("acol: " + aColValue);
-            console.log("bcol: " + bColValue);
             return aColValue > bColValue ? (1 * directionModifier) : (-1 * directionModifier);
         })
     }
@@ -387,6 +380,12 @@ function sortSymbolListByColumn(tableBody, column, asc = true, watchlist) {
 
     localStorage.setItem(watchlist, JSON.stringify(sortedSymbols));
 
+    // clear the event listeners from sorting buttons
+    buttons.forEach((button) => {
+        let clone = button.cloneNode(true);
+        button.parentNode.replaceChild(clone, button);
+        console.log("cloned " + button + "to " + clone);
+    })
     // remake list with new sorted array of symbols
     fetchUserList();
 }
