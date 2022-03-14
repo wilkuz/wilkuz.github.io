@@ -11,18 +11,61 @@ const addListDropdown = document.querySelector('.dropdown-form');
 const addListForm = document.querySelector('.add-new-list-form');
 const newListInput = document.getElementById('list-name-input');
 const newListBtn = document.getElementById('addNewListName');
+const editListsBtn = document.getElementById('editListsBtn');
+const editListDropdown = document.getElementById('editListDropdown');
 
-/* unless user it new to the site (in that case, give user a default watchlist), populate watchlist selector with users current storage */
+/* unless user it new to the site (in that case, give user a default watchlist), populate watchlist selectors with users current storage */
 let x = 0;
 while (window.localStorage.key(x) != null) {
+    //populate the current list selector
     let listNameObj = window.localStorage.key(x);
     let listNameStr = listNameObj.toString();
     let newListOption = document.createElement('option');
     newListOption.setAttribute('value', listNameStr);
     newListOption.innerHTML = listNameStr;
     selectList.appendChild(newListOption);
+
+    //populate the edit list
+    let newListEditItem = document.createElement('li');
+    newListEditItem.classList.add('dropdown-edit-list-item');
+    newListEditItem.innerText = listNameStr;
+    editListDropdown.appendChild(newListEditItem);
+
+    // buttons and button container
+    let editItemBtnContainer = document.createElement('div');
+    let removeListBtn = document.createElement('button');
+    removeListBtn.innerHTML = `<i class="fa-solid fa-xmark fa-xs"></i>`
+
+    editItemBtnContainer.append(removeListBtn);
+    newListEditItem.appendChild(editItemBtnContainer);
+
+    removeListBtn.addEventListener('click', () => {
+        localStorage.removeItem(listNameStr);
+        newListEditItem.remove();
+        newListOption.remove();
+    })
     x++;
 }
+
+
+
+
+// close dropdown if clicked outside of box
+document.addEventListener('click', e => {
+    let addBtnAndDropdown = [addListDropdown, addListBtn, addListForm, newListInput];
+    if (addListDropdown.classList.contains('active') && addBtnAndDropdown.indexOf(e.target) < 0) {
+        addListDropdown.classList.remove('active');
+        addListBtn.classList.remove('active');
+    }
+
+    let editListItems = document.querySelectorAll('.dropdown-edit-list-item');
+    let editBbtnAndDropdown = [editListDropdown, ...editListItems, editListsBtn];
+    if (editListDropdown.classList.contains('active') && editBbtnAndDropdown.indexOf(e.target) < 0) {
+        editListsBtn.classList.remove('active');
+        editListDropdown.classList.remove('active');
+    }
+    
+});
 
 // change current displayed list to selected list
 selectList.addEventListener('change', e => {
@@ -30,17 +73,20 @@ selectList.addEventListener('change', e => {
     fetchUserList(selectList.value);
 })
 
-document.addEventListener('click', e => {
-    let btnAndDropdown = [addListDropdown, addListBtn, addListForm, newListInput];
-    if (addListDropdown.classList.contains('active') && btnAndDropdown.indexOf(e.target) < 0) {
-        addListDropdown.classList.remove('active');
-        addListBtn.classList.remove('active');
-    }
-});
 
+//toggle dropdown to edit lists
+editListsBtn.addEventListener('click', () => {
+    if (editListsBtn.classList.contains('active')) {
+        editListsBtn.classList.remove('active');
+        editListDropdown.classList.remove('active');
+    } else {
+        editListsBtn.classList.add('active');
+        editListDropdown.classList.add('active');
+    }
+})
 
 // toggle dropdown to add new list
-addListBtn.addEventListener('click', e => {
+addListBtn.addEventListener('click', () => {
     if (addListDropdown.classList.contains('active')) {
         addListBtn.classList.remove('active');
         addListDropdown.classList.remove('active');
@@ -181,6 +227,8 @@ async function fetchUserList(watchlist = selectList.value) {
 
     console.log(watchlist);
     let symbols = localStorage.getItem(watchlist);
+    console.log(symbols);
+    console.log(typeof symbols)
     // if user is new to the website, or has no watchlists, give a default watchlist
     if (window.localStorage.key(0) == null) {
         symbols = [];
@@ -198,6 +246,7 @@ async function fetchUserList(watchlist = selectList.value) {
         localStorage.setItem("My watchlist", JSON.stringify(symbols));
         display.setAttribute("id", "My watchlist");
         mainTableBody.classList.remove('empty-list');
+        watchlist = display.id;
     } else if (symbols == '') {
         mainTableBody.innerHTML = "List is empty, add a ticker above!";
         display.setAttribute('id', watchlist);
@@ -209,8 +258,9 @@ async function fetchUserList(watchlist = selectList.value) {
         mainTableBody.classList.remove('empty-list');
     }
 
-    
-
+    console.log("when i run rest of code, symbols is: " + JSON.stringify(symbols));
+    console.log("it is");
+    console.log(symbols.length + " long");
     // clear list table
     mainTableBody.innerHTML = "";
 

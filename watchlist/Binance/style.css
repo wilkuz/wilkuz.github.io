@@ -72,6 +72,50 @@ body {
     position: relative;
 }
 
+.dropdown-edit-list {
+    min-width: 50%;
+    background: var(--gray-btn);
+    padding: 1em .5em;
+    position: absolute;
+    list-style: none;
+    opacity: 0;
+    pointer-events: none;
+    top: 2.5em;
+    left: 25%;
+    font-size: .8em;
+    transition: opacity 250ms ease;
+}
+
+.dropdown-edit-list.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.edit-lists-btn {
+    background: var(--gray-btn);
+    padding: .2em .7em;
+    font-size: .7em;
+    cursor: pointer;
+}
+
+.edit-lists-btn:hover {
+    opacity: .9;
+}
+
+.edit-lists-btn.active {
+    background: var(--gray-btn);
+    opacity: 0.7;
+}
+
+.dropdown-edit-list-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown-edit-list-item button {
+    cursor: pointer;
+}
+
 .add-new-list-btn {
     background: var(--gray-btn);
     padding: .2em .7em;
@@ -95,11 +139,10 @@ body {
 
 .dropdown-form {
     position: absolute;
-    left: 37%;
+    left: 60%;
     top: calc(100% + .5em);
     background: var(--gray-btn);
-    padding: 2em 1em;
-    border-radius: 10px;
+    padding: 1.5em .5em .5em .5em;
     box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
     opacity: 0;
     pointer-events: none;
