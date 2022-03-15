@@ -46,6 +46,11 @@ body {
     color: white;
 }
 
+select {
+    background: var(--main-bg-color);
+    color: white;
+}
+
 .symbol-form-container > input {
     border-bottom: 1px solid white;
     padding: .2em;
@@ -58,6 +63,11 @@ body {
 
 .submit-new-symbol:hover {
     opacity: .9;
+}
+
+option {
+    background-color: transparent;
+    color: white;
 }
 
 #reloadBtn {
