@@ -111,6 +111,9 @@ body {
 @media screen and (max-width: 1000px) {
 
     /* --- NAVIGATION --- */
+    body {
+        overflow-x: hidden;
+    }
 
     .nav-list {
         flex-direction: column;
@@ -128,27 +131,28 @@ body {
     }
 
     .nav-mobile-hidden {
-        height: 100%;
+        height: 500%;
         background-color: #ff8549;
         top: 0;
-        position: absolute;
+        position: fixed;
         width: 60vw;
         z-index: 10;
-        transform:translateX(100vw);
+        transform:translateX(110vw);
         transition: transform 500ms;
         overflow: hidden;
     }
 
     .nav-mobile-visible {
-        height: 100%;
+        height: 500%;
         background-color: #ff8549;
         top: 0;
         transform: translateX(40vw);
-        position: absolute;
+        position: fixed;
         width: 60vw;
         box-shadow: 0 -10px 20px var(--banner-orange-text);
         transition: transform 500ms;
         z-index: 10;
+        overflow: hidden;
     }
 
     .nav-overlay-active {
