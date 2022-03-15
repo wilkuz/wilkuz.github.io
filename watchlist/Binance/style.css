@@ -139,7 +139,7 @@ body {
 
 .dropdown-form {
     position: absolute;
-    left: 60%;
+    left: 58%;
     top: calc(100% + .5em);
     background: var(--gray-btn);
     padding: 1.5em .5em .5em .5em;
