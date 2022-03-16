@@ -363,11 +363,16 @@ li, a, button, h1, h3, p {
     max-width: 20rem;
     height: 25rem;
     transition: transform 500ms;
+    border: 2px solid var(--main-bg-color);
 }
 
 #pong-card {
     background-image: url(images/pong-project-image.JPG);
     background-size: cover;
+}
+
+#crypto-card {
+    background-image: url(images/crypto-screener.png);
 }
 
 .card-overlay {
@@ -401,12 +406,15 @@ li, a, button, h1, h3, p {
     font-weight: bold;
     padding: 1rem;
     background-color: var(--main-bg-color);
-    
     box-shadow: 0 0 10px var(--main-bg-color);
 }
 
-.portfolio-item-header {
+.portfolio-item-header-container {
     background-color: transparent !important;
+}
+
+.portfolio-item-header-container h1 {
+    box-shadow: 0 0 20px var(--main-bg-color);
 }
 
 @media screen and (min-width:750px) {
@@ -432,7 +440,8 @@ li, a, button, h1, h3, p {
 
     .portfolio-btn {
         cursor: pointer;
-        width: 100%
+        width: 100%;
+        height: 100%;
     }
 }
 
