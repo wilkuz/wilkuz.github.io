@@ -373,13 +373,19 @@ li, a, button, h1, h3, p {
 
 #crypto-card {
     background-image: url(images/crypto-screener.png);
+    background-size: cover;
+}
+
+#lucifer-card {
+    background-image: url(images/lucifer-preview.png);
+    background-size: cover;
 }
 
 .card-overlay {
     position: relative;
     top: 40%;
     text-align: center;
-    background-color: transparent !important;
+    background: linear-gradient(0deg, black 50%, transparent) !important;
 }
 
 .card-overlay h1 {
@@ -407,6 +413,7 @@ li, a, button, h1, h3, p {
     padding: 1rem;
     background-color: var(--main-bg-color);
     box-shadow: 0 0 10px var(--main-bg-color);
+    height: 100%;
 }
 
 .portfolio-item-header-container {
