@@ -82,9 +82,10 @@ body {
         gap: 5em;
         font-size: 150%;
         align-items: center;
+        justify-content: center;
         background-color: #ff8549;
         color: black;
-        padding-top: 2em;
+        padding-top: 25%;
         z-index: 10;
         overflow: hidden;
     }
