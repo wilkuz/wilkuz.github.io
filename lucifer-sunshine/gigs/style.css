@@ -301,3 +301,9 @@ h1 {
 .card-content.active {
     max-height: initial;
 }
+
+@media screen and (max-width: 1000px) {
+    .schedule-list {
+        width: 90%;
+    }
+}
