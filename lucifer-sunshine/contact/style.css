@@ -188,6 +188,7 @@ body {
     .hamburger-menu-btn.open .hamburger-lines {
         transform: translateX(50px);
         background: transparent;
+        position: fixed;
     }
 
     .hamburger-menu-btn.open .hamburger-lines::before {
