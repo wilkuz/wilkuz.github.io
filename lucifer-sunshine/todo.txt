@@ -1,3 +1,7 @@
 donation
+    paypal btn
+        -https://www.youtube.com/watch?v=DNM9FdFrI1k&t=1092s
+    swish btn
+
 audio visualizer
 merch store link
