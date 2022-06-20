@@ -281,7 +281,6 @@ li, a, button, h1, h3, p {
 }
 
 .about-me-container {
-    display: grid;
     grid-template-columns: 1fr 2fr;
     max-width: 60%;
     text-align: center;
